@@ -1,0 +1,11 @@
+{
+	"name": "myblog",
+	"version": "0.0.1",
+	"dependencies": {
+		"express": "4.13.4",
+		"express-session": "1.13.0",
+		"body-parser": "1.15.0",
+		"ejs": "2.4.1",
+		"mysql": "2.10.2"
+	}
+}

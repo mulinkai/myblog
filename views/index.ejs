@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta charset='utf-8' />
+    <style type="text/css">
+        *{
+            margin: 0px;
+            padding: 0px;
+        }
+        body{
+            margin: 10px;
+            padding: 5px;
+        }
+        header{
+            text-align: right;
+            padding: 5px;
+        }
+        a{
+            margin: 0px 10px;
+            text-decoration: none;
+        }
+        a:hover{text-decoration: underline;}
+        section{
+            text-align: center;
+            position: relative;
+            margin-top: 30px;
+            padding-top: 20px;
+        }
+        section div{
+            margin: 45px auto;
+            width: 70%;
+            text-align: left;
+        }
+        section button {
+            position: absolute;
+            top: 0px;
+            left: 50px;
+        }
+        section button a {
+            color: black;
+        }
+        article{
+            margin: 20px 0;
+        }
+        article p{
+            margin-left: 25px;
+            font-size: 0.8em;
+        }    
+    </style>
+  </head>
+  <body>
+    <header>
+        <% if (isLogin) { %>
+          <span>欢迎您，<%= user_name %></span>
+          <a href="/logout">退出登录</a>
+        <% } else { %>
+            <a href="/login">登录</a>
+            <a href="/signup">注册</a>
+        <% } %>
+    </header>
+    <hr />
+    <section>
+        <button>
+            <a href="/article/create">发表文章</a>
+        </button>
+        <h2>欢迎来到我的博客</h2>
+        <div>
+            <% if (count) { %>
+                <% articles.forEach (function(article) { %>
+                    <article>
+                        <h3><a href="/article/<%= article.article_id %>"><%= article.title %></a></h3>
+                        <p><%= article.content %>......</p>
+                    </article>
+                <% }); %>
+            <% } %>
+        </div>
+    </section>
+  </body>
+</html>

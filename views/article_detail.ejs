@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title><%= title %></title>
+	<meta charset="utf-8" />
+	<style type="text/css">
+		body {
+			font-size: 16px;
+			font-family: "微软雅黑";
+		}
+		body header {
+			margin-left: 25px;
+		}
+		body section {
+			text-align: center;
+		}
+		article{
+			width: 80%;
+			word-wrap: break-word;
+			margin: 110px 150px;
+			text-align: left;
+		}
+		section div {
+			margin-top: 50px;
+		}
+		a{
+			text-decoration: none;
+		}
+		p>span {
+			display: inline-block;
+			margin: 0 10px;
+		}
+		em {
+			color: #800080;
+		}
+		span span{
+			color: #4180E8;
+		}
+		header div{
+			position: absolute;
+			right: 30px;
+			top: 30px;
+		}
+		h2{margin: 0; padding: 15px;font-size: 2.0em;margin-left: 15px;display: inline-block; height: 30px;}
+	</style>
+</head>
+<body>
+	<header>
+		<h2>文章详情</h2>
+		<div>
+			<% if (isLogin) { %>
+	          <span>欢迎您，<%= user_name %></span>
+	          <a href="/logout">退出登录</a>
+	        <% } else { %>
+	            <a href="/login">登录</a>
+	            <a href="/signup">注册</a>
+	        <% } %>
+		</div>
+		<hr />
+	</header>
+	<section>
+		<header>
+			<h3><%= article.title %></h3>
+			<p><span>发表于&nbsp;<em><%= article.publish_time %></em></span><span>作者：<span><%= article.author %></span></span></p>
+		</header>
+		<section>
+			<article><pre><%= article.content %></pre></article>
+			<% if (isSelf) { %>
+				<div id="operation">
+					<a href="/article/edit/<%= article.article_id %>">
+						<input id="edit" type="button" value="修改" />
+					</a>
+					&nbsp;&nbsp;&nbsp;
+					<a href="/article/delete/<%= article.article_id %>">
+						<input id="delete" type="button" value="删除" />
+					</a>
+				</div>
+			<% } %>
+		</section>
+	</section>
+</body>
+</html>

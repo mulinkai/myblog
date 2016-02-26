@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title><%= title %></title>
+	<style type="text/css">
+		body{
+			font-size: 14px;
+			font-style: "微软雅黑";
+		}
+		h3{margin: 0; padding: 15px;font-size: 2.0em;margin-left: 15px;display: inline-block; height: 30px;}
+		section{
+			margin-top: 50px;
+			vertical-align: middle;
+			text-align: center;
+		}
+		section>form{
+			font-size: 1.4em;
+		}
+		table {
+			margin: 0 auto;
+		}
+		table tr:first-child>td:last-child {
+			text-align: left;
+		}
+		input {
+			height: 25px;
+		}
+		header div{
+			position: absolute;
+			right: 30px;
+			top: 30px;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<h3><%= operation %></h3>
+		<div>
+			<% if (isLogin) { %>
+	          <span>欢迎您，<%= user_name %></span>
+	          <a href="/logout">退出登录</a>
+	        <% } else { %>
+	            <a href="/login">登录</a>
+	            <a href="/signup">注册</a>
+	        <% } %>
+		</div>
+		<hr />
+	</header>
+	<section>
+		<p></p>
+		<form method="post" action="/article/edit/<%= article.article_id %>" onsubmit="javascrept:return confirm('确定修改吗？')">
+			<table>
+				<tr>
+					<td><label>标题:</label></td>
+					<td style="text-align: left;"><input id="title" name="title" type="text"   required value=<%= article.title %> size="50" /></td>
+				</tr>
+				<tr><td>&nbsp;</td><td></td></tr>
+				<tr>
+					<td><label>正文:</label></td>
+					<td><textarea id="content" name="content" rows="30" cols="80" required placeholder="必填"><%= article.content %></textarea></td>
+				</tr>
+				<tr>
+					<td colspan="2"><input type="submit" value="修改" /></td>
+				</tr>
+			</table>
+		</form>
+	</section>
+</body>
+</html>
