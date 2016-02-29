@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var mysql = require('mysql');
 var whitelist = require('./whitelist');
-console.log(whitelist)
+console.log(whitelist);
 
 var connection = mysql.createConnection ({
 	host : 'localhost',
@@ -119,6 +119,7 @@ app.post('/signup',function (req,res) {
 
 //登出
 app.get('/logout',function (req, res) {
+	req.session.user_name = "";
 	req.session.token = false;
 	res.redirect('/');
 });
@@ -169,18 +170,26 @@ app.get('/article/delete/:id?', function (req, res) {
 
 //修改博客
 app.get('/article/edit/:id?', function (req, res) {
-	//需判断登录否以及当前用户和文章作者一致否
-	//
-	//
-	//
-	//
 
-	var sql = "SELECT * FROM ARTICLE WHERE ARTICLE_ID=" + req.params.id;
-	connection.query( sql, { }, function (err, result) {
-		if (err) throw err;
-		res.locals.article = result[0];
-		res.render('article_edit', { title: 'article_edit',operation: '修改博客' });
+	var sql = "SELECT author FROM article WHERE article_id = " + req.params.id;
+	var username = req.session.user_name;
+	connection.query(sql, { }, function (err, result) {
+		if(err) throw err;
+		if(username == result[0].author) {
+			sql = "SELECT * FROM ARTICLE WHERE ARTICLE_ID=" + req.params.id;
+			connection.query( sql, { }, function (err, result) {
+				if (err) throw err;
+				res.locals.article = result[0];
+				res.render('article_edit', { title: 'article_edit',operation: '修改博客' });
+			});
+		} else if(username){
+			res.redirect("/");
+		} else {
+			res.redirect('/login');
+		}
 	});
+
+	
 });
 app.post('/article/edit/:id?', function (req, res) {
 	var title = req.body.title;
