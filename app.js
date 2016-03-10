@@ -18,6 +18,8 @@ var app = express();
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
+app.use('/public', express.static(__dirname + '/static'));
+
 //使用express-session中间件
 app.use(session({
 	resave: false,
@@ -31,7 +33,6 @@ app.use(session({
 // check login
 app.use(function (req,res,next) {
 	var token = req.session.token;
-	//console.log(req.session);
   	if(token) {
     	// 已登录
     	res.locals.user_name = req.session.user_name;
@@ -39,10 +40,30 @@ app.use(function (req,res,next) {
     	next();
   	} else {
     	// 未登录
+    	res.locals.user_name = '';
     	res.locals.isLogin = false;
     	next();
   	}
 });
+
+/*app.use(function (req, res,next) {
+	for (var regex in whitelist)
+		if(req.url.match(whitelist[regex]) && req.method == "GET") {
+			console.log(req.params.id);
+			var sql = "SELECT author FROM article WHERE article_id = " + req.params.id;
+			var username = req.session.user_name;
+			connection.query(sql, { }, function (err, result) {
+				if(err) throw err;
+				if(username == result[0].author) {
+					req.session.isAuthor = true;
+				} else {
+					req.session.isAuthor = false;
+				}
+			});
+			console.log("1");
+		}
+	next();
+});*/
 
 //使用body-parser中间件
 //app.use(bodyParser.json());
@@ -51,7 +72,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //首页
 app.get('/',function (req,res,next) {
 
-	var sql = "SELECT article_id,title,content FROM article LIMIT 0,10";
+	var sql = "SELECT article_id,title,content FROM article LIMIT 0,20";
 			connection.query(sql, function (err, result){
 				if (result) {
 					var i;
@@ -74,14 +95,7 @@ app.get('/login',function (req,res)  {
 app.post('/login',function (req,res) {
 	var email = req.body.email;
 	var pass = req.body.password;
-	/*if (email == req.session.email && password == req.session.password) {
-		req.session.token = true;
-		res.redirect('/');
-	} else {
-		res.render('login', { title: 'login' });
-	}*/
 
-	
 	var sql = "SELECT user_id,user_name FROM USER WHERE email = ? && password = ?";
 	connection.query(sql,[email,pass],function (err, result){
 		if(err) throw err;
@@ -111,7 +125,7 @@ app.post('/signup',function (req,res) {
 	var sql = "INSERT INTO user set ?";
 	connection.query(sql, { user_name: user_name, email: email, password: password, signup_time: new Date() }, function (err, result) {
 		if(err) throw err;
-		console.log('注册成功！')
+		console.log('注册成功！');
 	});
 	res.redirect('/login');
 	//res.render('login', { title: 'login' });
@@ -124,7 +138,7 @@ app.get('/logout',function (req, res) {
 	res.redirect('/');
 });
 
-//发表文章
+//发表博客
 app.get('/article/create', function (req, res) {
 	if (req.session.user_name)
 		res.render('article_create', { title: 'article_create', operation: '发表博客', isEdit: false });
@@ -145,37 +159,90 @@ app.post('/article/create', function (req, res) {
 });
 
 //阅读博客
-app.get('/article/:id?', function (req, res) {
+app.get('/article/:id', function (req, res) {
 	var sql = "SELECT * FROM ARTICLE WHERE ARTICLE_ID=" + req.params.id;
 	connection.query( sql, { }, function (err, result) {
 		if (err) throw err;
+		if (!result[0]) return res.send('page not found.');
 		res.locals.article = result[0];
-		if (result[0].author == req.session.user_name)
+		if (result[0].author === req.session.user_name)
 			res.locals.isSelf = true;
 		else
 			res.locals.isSelf = false;
-		res.render('article_detail', { title: 'article_detail' });
+		sql = "SELECT * FROM comment WHERE article_id = " + req.params.id;
+		connection.query(sql, {}, function (err, result) {
+			if (err) throw err;
+
+			var comments = new Array();
+			var length = result.length;
+			for (var i = 0; i < length; i++) {
+				var comment = result[i];
+				if (!comment.relative_comment) {
+					var commentObj = {};
+					commentObj.commentHead = comment;
+					commentObj.commentArray = new Array;
+					for (var j = i+1; j < length; j++) {
+						if (result[j].relative_comment == comment.comment_id) {
+							commentObj.commentArray.push(result[j]);
+						}	
+					}
+					comments.push(commentObj);
+				}
+			}
+			res.locals.comments = comments;
+			res.render('article_detail', { title: 'article_detail' });
+		});
 	});
 });
 
 //删除博客
-app.get('/article/delete/:id?', function (req, res) {
-	var sql = "delete from article where article_id=" + req.params.id;
-	connection.query(sql, { }, function (err) {
-		if (err)	throw err;
-		console.log('删除成功');
-		res.redirect('/');
-	});
-});
-
-//修改博客
-app.get('/article/edit/:id?', function (req, res) {
+app.get('/article/delete/:id', function (req, res) {
 
 	var sql = "SELECT author FROM article WHERE article_id = " + req.params.id;
 	var username = req.session.user_name;
 	connection.query(sql, { }, function (err, result) {
 		if(err) throw err;
-		if(username == result[0].author) {
+		if(username === result[0].author) {
+			sql = "delete from article where article_id=" + req.params.id + ";delete from comment where article_id=" +req.params.id +";";
+			connection.query(sql, { }, function (err) {
+				if (err)	throw err;
+				console.log('删除成功');
+				res.redirect('/');
+			});
+		} else if(username){
+			res.redirect("/");
+		} else {
+			res.redirect('/login');
+		}
+	});
+	
+	/*var sql = "delete from article where article_id=" + req.params.id;
+	connection.query(sql, { }, function (err) {
+		if (err)	throw err;
+		console.log('删除成功');
+		res.redirect('/');
+	});*/
+});
+
+//修改博客
+app.get('/article/edit/:id', function (req, res) {
+
+	/*if(req.session.isAuthor) {
+		var sql = "SELECT * FROM article WHERE article_id=" + req.params.id;
+		connection.query( sql, { }, function (err, result) {
+			if (err) throw err;
+			res.locals.article = result[0];
+			res.render('article_edit', { title: 'article_edit',operation: '修改博客' });
+		});
+	} else {
+		res.redirect("/");
+	}*/
+
+	var sql = "SELECT author FROM article WHERE article_id = " + req.params.id;
+	var username = req.session.user_name;
+	connection.query(sql, { }, function (err, result) {
+		if(err) throw err;
+		if(username === result[0].author) {
 			sql = "SELECT * FROM ARTICLE WHERE ARTICLE_ID=" + req.params.id;
 			connection.query( sql, { }, function (err, result) {
 				if (err) throw err;
@@ -188,8 +255,6 @@ app.get('/article/edit/:id?', function (req, res) {
 			res.redirect('/login');
 		}
 	});
-
-	
 });
 app.post('/article/edit/:id?', function (req, res) {
 	var title = req.body.title;
@@ -213,6 +278,96 @@ app.post('/article/edit/:id?', function (req, res) {
 		return result;
 	});
 }*/
+
+//对博客发表评论
+app.post('/article/comment/:id?', function (req, res) {
+	var token = req.session.token;
+	if (token) {
+		var article_id = req.params.id,
+			comment_text = req.body.comment_text,
+			comment_author = req.session.user_name,
+			comment_time = new Date();
+		var sql = "INSERT INTO COMMENT SET ?";
+		connection.query(sql, { 'article_id': article_id, 'comment_text': comment_text, 'comment_author': comment_author, 'comment_time': comment_time }, function (err , result) {
+			if(err)	throw err;
+			console.log('评论成功');
+			var comment = {
+				comment_author: comment_author,
+				comment_text: comment_text,
+				comment_time: comment_time,
+				comment_id: result.insertId,
+				reply_author: comment_author
+			};
+			res.send(comment);
+		});
+	} else{
+		res.send("请先登录,再进行评论");
+	}
+	
+});
+
+//回复评论
+app.post('/article/reply/:id?', function (req, res) {
+	var token = req.session.token;
+	if (token) {
+		var article_id = req.params.id,
+			comment_text = req.body.comment_text,
+			comment_author = req.session.user_name,
+			comment_time = req.body.comment_time,
+			reply_author = req.body.reply_author,
+			relative_comment = req.body.relative_comment;
+			var comment_time = new Date();
+		var sql = "INSERT INTO COMMENT SET ?";
+		connection.query(sql, { article_id: article_id, comment_text: comment_text, comment_author: comment_author, comment_time: comment_time, reply_author: reply_author, relative_comment:relative_comment }, function (err , result) {
+			if(err)	throw err;
+			console.log('评论成功');
+			res.send( { 'comment_id': result.insertId } );
+		});
+	} else{
+		res.send('请先登录，再进行评论');
+	}
+	
+});
+
+//删除回复
+app.post('/comment/delete/:lot?', function (req, res) {
+	/*var comment_id = req.body.comment_id,
+		sql = "delete from comment where comment_id=" + comment_id,
+		count = req.params.lot;
+	connection.query(sql, {}, function (err, result) {
+		if(err)	throw err;
+		if(count) {
+			sql = "delete from comment where relative_comment=" + comment_id;
+			connection.query(sql, function (err, result) {
+				if (err) throw err;
+				console.log('删除回复成功');
+				res.send(true);
+			});
+		} else {
+			console.log('删除回复成功');	
+			res.send(true);
+		}
+	});*/
+	deleteComments(req.body.comment_id, req.params.lot,res);
+});
+
+function deleteComments (comment_id, count, res) {
+	var sql = "delete from comment where comment_id=" + comment_id;
+	connection.query(sql, {}, function (err, result) {
+		if(err)	throw err;
+		if(count) {
+			sql = "delete from comment where relative_comment=" + comment_id;
+			connection.query(sql, function (err, result) {
+				if (err) throw err;
+				console.log('删除回复成功');
+				res.send(true);
+			});
+		} else {
+			console.log('删除回复成功');	
+			res.send(true);
+		}
+	});
+}
 
 module.exports = app;
 

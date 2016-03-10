@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8" />
 	<title><%= title %></title>
+	<link rel="stylesheet" type="text/css" href="/public/css/common.css">
 	<style type="text/css">
 		body{
 			font-size: 14px;
@@ -49,7 +50,7 @@
 	</header>
 	<section>
 		<p></p>
-		<form method="post" action="/article/create" onsubmit="javascrept:return confirm('确定发表吗？')">
+		<form id="pubform" method="post" action="/article/create" >
 			<table>
 				<tr>
 					<td><label>标题:</label></td>
@@ -61,11 +62,31 @@
 					<td><textarea id="content" name="content" rows="30" cols="80" required placeholder="必填"></textarea></td>
 				</tr>
 				<tr>
-					<td colspan="2"><input type="submit" value="发表" /></td>
+					<td colspan="2"><input id="publish" type="button" value="发表" /></td>
 				</tr>
 			</table>
 		</form>
 	</section>
-	</script>
+	<div class="pages">
+        <a href="/">首页</a>
+        <a onclick="history.back();">后退</a>
+        <a onclick="history.forward();">前进</a>
+    </div>
+    <div id="overlay" class="overlay parent hid">
+    	<div class="child">
+    		<p>确定要发表吗？</p>
+    		<br />
+    		<input type="submit" value="确定" form="pubform" onclick="checkForm();"	 />
+    		&nbsp;
+    		<input type="button" value="取消" onclick="closeOverlay();" />
+    	</div>
+    </div>
+    <script type="text/javascript" src="/public/js/jquery-1.12.1.min.js"></script>
+    <script type="text/javascript" src="/public/js/common.js"></script>
+    <script type="text/javascript">
+    	$('#publish').on('click', function () {
+    		$('#overlay').removeClass('hid');
+    	});
+    </script>
 </body>
 </html>

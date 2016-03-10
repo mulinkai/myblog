@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8" />
 	<title><%= title %></title>
+	<link rel="stylesheet" type="text/css" href="/public/css/common.css">
 	<style type="text/css">
 		body{
 			font-size: 14px;
@@ -49,7 +50,7 @@
 	</header>
 	<section>
 		<p></p>
-		<form method="post" action="/article/edit/<%= article.article_id %>" onsubmit="javascrept:return confirm('确定修改吗？')">
+		<form method="post" action="/article/edit/<%= article.article_id %>" id="pubform" >
 			<table>
 				<tr>
 					<td><label>标题:</label></td>
@@ -61,10 +62,31 @@
 					<td><textarea id="content" name="content" rows="30" cols="80" required placeholder="必填"><%= article.content %></textarea></td>
 				</tr>
 				<tr>
-					<td colspan="2"><input type="submit" value="修改" /></td>
+					<td colspan="2"><input id="edit" type="button" value="修改" /></td>
 				</tr>
 			</table>
 		</form>
 	</section>
+	<div class="pages">
+        <a href="/">首页</a>
+        <a onclick="history.back();">后退</a>
+        <a onclick="history.forward();">前进</a>
+    </div>
+    <div id="overlay" class="overlay parent hid">
+    	<div class="child">
+    		<p>确定要修改吗？</p>
+    		<br />
+    		<input type="submit" value="确定" form="pubform" onclick="checkForm();"	 />
+    		&nbsp;
+    		<input type="button" value="取消" onclick="closeOverlay();" />
+    	</div>
+    </div>
+    <script type="text/javascript" src="/public/js/jquery-1.12.1.min.js"></script>
+    <script type="text/javascript" src="/public/js/common.js"></script>
+    <script type="text/javascript">
+    	$('#edit').on('click', function () {
+    		$('#overlay').removeClass('hid');
+    	});
+    </script>
 </body>
 </html>

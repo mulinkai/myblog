@@ -1,1 +1,1 @@
-module.exports = [ 'create', 'edit' ]
+module.exports = [ 'delete', 'edit' ]
