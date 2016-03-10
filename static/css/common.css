@@ -1,0 +1,84 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, .6);
+}
+.overlay>div {
+    border-radius: 5px;
+    width: 20%;
+    height: 14%;
+    background-color: white;
+}
+.perent {
+    position: relative;
+}
+.child {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    text-align: center;
+    vertical-align: middle;
+    padding-top: 20px;
+}
+.pages {
+    position: absolute;
+    top: 80px;
+    left: 50px;
+}
+.hide {
+    display: none;
+}
+.hid {
+    visibility: hidden;
+}
+.comment {
+    margin: 35px 30% 10px 10%;
+}
+.comment-reply {
+    color: #787d82;
+    margin: 35px 30% 10px 16%;
+}
+.comment-author {
+    text-align: center;
+    position: relative;
+    top: -12px;
+    width: 18%;
+    color: black;
+}
+.reply-content {
+    margin:20px 10px 10px 20%;
+}
+.float-left {
+    margin-left: 10px;
+    float: left;
+}
+.clear {
+    clear: both;
+}
+.comment-btn {
+    float: right;
+    margin-right: 22px;
+    cursor: pointer; 
+}
+.reply-btn {
+    float: right;
+    color: #b5b9bc;
+    margin-right: 22px;
+    cursor: pointer; 
+}
+.comment-reply {
+
+}
+.message {
+    background-color: #fcf8e3;
+    color: red;
+    display: block;
+    margin-left: 40%;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
