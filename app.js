@@ -1,26 +1,26 @@
 var http = require('http');
 var express = require('express');
-var bodyParser = require('body-parser');
-var session = require('express-session');
-var mysql = require('mysql');
-var whitelist = require('./whitelist');
-console.log(whitelist);
+/*var bodyParser = require('body-parser');
+var session = require('express-session');*/
+// var mysql = require('mysql');
+// var whitelist = require('./whitelist');
+// console.log(whitelist);
 
-var connection = mysql.createConnection ({
+/*var connection = mysql.createConnection ({
 	host : 'localhost',
 	user : 'root',
 	password : '123456',
 	database : 'myblog'
-});
+});*/
 
 var app = express();
 
 app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
+app.set('views', __dirname + '/app/views');
 
 app.use('/public', express.static(__dirname + '/static'));
 
-//使用express-session中间件
+/*//使用express-session中间件
 app.use(session({
 	resave: false,
 	saveUninitialized: true,
@@ -28,9 +28,9 @@ app.use(session({
     cookie:{
       maxAge: 1000*60*30
     }
-}));
+}));*/
 
-// check login
+/*// check login
 app.use(function (req,res,next) {
 	var token = req.session.token;
   	if(token) {
@@ -44,32 +44,14 @@ app.use(function (req,res,next) {
     	res.locals.isLogin = false;
     	next();
   	}
-});
-
-/*app.use(function (req, res,next) {
-	for (var regex in whitelist)
-		if(req.url.match(whitelist[regex]) && req.method == "GET") {
-			console.log(req.params.id);
-			var sql = "SELECT author FROM article WHERE article_id = " + req.params.id;
-			var username = req.session.user_name;
-			connection.query(sql, { }, function (err, result) {
-				if(err) throw err;
-				if(username == result[0].author) {
-					req.session.isAuthor = true;
-				} else {
-					req.session.isAuthor = false;
-				}
-			});
-			console.log("1");
-		}
-	next();
 });*/
 
-//使用body-parser中间件
-//app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+require('./config/routes')(app);
 
-//首页
+/*//使用body-parser中间件
+app.use(bodyParser.urlencoded({ extended: false }));*/
+
+/*//首页
 app.get('/',function (req,res,next) {
 
 	var sql = "SELECT article_id,title,content FROM article LIMIT 0,20";
@@ -203,7 +185,7 @@ app.get('/article/delete/:id', function (req, res) {
 	connection.query(sql, { }, function (err, result) {
 		if(err) throw err;
 		if(username === result[0].author) {
-			sql = "delete from article where article_id=" + req.params.id + ";delete from comment where article_id=" +req.params.id +";";
+			sql = "delete from article where article_id=" + req.params.id;
 			connection.query(sql, { }, function (err) {
 				if (err)	throw err;
 				console.log('删除成功');
@@ -215,29 +197,10 @@ app.get('/article/delete/:id', function (req, res) {
 			res.redirect('/login');
 		}
 	});
-	
-	/*var sql = "delete from article where article_id=" + req.params.id;
-	connection.query(sql, { }, function (err) {
-		if (err)	throw err;
-		console.log('删除成功');
-		res.redirect('/');
-	});*/
 });
 
 //修改博客
 app.get('/article/edit/:id', function (req, res) {
-
-	/*if(req.session.isAuthor) {
-		var sql = "SELECT * FROM article WHERE article_id=" + req.params.id;
-		connection.query( sql, { }, function (err, result) {
-			if (err) throw err;
-			res.locals.article = result[0];
-			res.render('article_edit', { title: 'article_edit',operation: '修改博客' });
-		});
-	} else {
-		res.redirect("/");
-	}*/
-
 	var sql = "SELECT author FROM article WHERE article_id = " + req.params.id;
 	var username = req.session.user_name;
 	connection.query(sql, { }, function (err, result) {
@@ -269,15 +232,6 @@ app.post('/article/edit/:id?', function (req, res) {
 	});
 
 });
-
-/*function findArticleById (id){
-	var sql = "SELECT TITLE,AUTHOR,PUBLISH_TIME,CONTENT FROM ARTICLE WHERE ARTICLE_ID=" + id;
-	connection.query(sql, { }, function (err, result) {
-		if (err) throw err;
-		console.log(result);
-		return result;
-	});
-}*/
 
 //对博客发表评论
 app.post('/article/comment/:id?', function (req, res) {
@@ -331,23 +285,6 @@ app.post('/article/reply/:id?', function (req, res) {
 
 //删除回复
 app.post('/comment/delete/:lot?', function (req, res) {
-	/*var comment_id = req.body.comment_id,
-		sql = "delete from comment where comment_id=" + comment_id,
-		count = req.params.lot;
-	connection.query(sql, {}, function (err, result) {
-		if(err)	throw err;
-		if(count) {
-			sql = "delete from comment where relative_comment=" + comment_id;
-			connection.query(sql, function (err, result) {
-				if (err) throw err;
-				console.log('删除回复成功');
-				res.send(true);
-			});
-		} else {
-			console.log('删除回复成功');	
-			res.send(true);
-		}
-	});*/
 	deleteComments(req.body.comment_id, req.params.lot,res);
 });
 
@@ -367,7 +304,7 @@ function deleteComments (comment_id, count, res) {
 			res.send(true);
 		}
 	});
-}
+}*/
 
 module.exports = app;
 
@@ -377,10 +314,10 @@ server.listen(3000, function (err) {
 	console.log(' - Server start at *:3000');
 });
 
-connection.connect(function (err) {
+/*connection.connect(function (err) {
 	if (err) {
 		console.error('error connecting: ' + err.stack);
 		return;
 	}
 	console.log('connected as id ' + connection.threadId);
-});
+});*/

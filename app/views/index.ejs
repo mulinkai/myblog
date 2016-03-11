@@ -55,7 +55,7 @@
   <body>
     <header>
         <% if (isLogin) { %>
-          <span>欢迎您，<%= user_name %></span>
+          <span>欢迎您，<%= user.user_name %></span>
           <a href="/logout">退出登录</a>
         <% } else { %>
             <a href="/login">登录</a>
@@ -73,7 +73,7 @@
                 <% articles.forEach (function(article) { %>
                     <article>
                         <h3><a href="/article/<%= article.article_id %>"><%= i %>、<%= article.title %></a></h3>
-                        <p><%= article.content %>......</p>
+                        <p><%= article.content %></p>
                     </article>
                 <% i++ }); %>
             <% } %>
