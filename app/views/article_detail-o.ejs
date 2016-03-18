@@ -11,7 +11,7 @@
 		<h2>文章详情</h2>
 		<div>
 			<% if (isLogin) { %>
-	          <span>欢迎您，<%= user_name %></span>
+	          <span>欢迎您，<%= user.user_name %></span>
 	          <a href="/logout">退出登录</a>
 	        <% } else { %>
 	            <a href="/login">登录</a>
@@ -22,14 +22,14 @@
 	</header>
 	<section>
 		<header>
-			<h3><%= article.title %></h3>
-			<p><span>发表于&nbsp;<em><%= article.publish_time %></em></span><span>作者：<span><%= article.author %></span></span></p>
+			<h3><%- data.article.title %></h3>
+			<p><span>发表于&nbsp;<em><%= data.article.publish_time %></em></span><span>作者：<span><%= data.article.author %></span></span></p>
 		</header>
 		<section>
-			<article><pre><%= article.content %></pre></article>
-			<% if (isSelf) { %>
+			<article><pre><%= data.article.content %></pre></article>
+			<% if (data.isSelf) { %>
 				<div id="operation">
-					<a href="/article/edit/<%= article.article_id %>">
+					<a href="/article/edit/<%= data.article.article_id %>">
 						<input id="edit" type="button" value="修改" />
 					</a>
 					&nbsp;&nbsp;&nbsp;
@@ -55,7 +55,7 @@
     	</div>
     </div>
 	<h3 class="comment">评论</h3>
-	<% comments.forEach (function (comment){ %>
+	<% data.comments.forEach (function (comment){ %>
 		<div name="comment_body">
 			<div class="comment">
 				<p class="float-left comment-author"><em><%= comment.commentHead.comment_author %></em></p>
@@ -63,10 +63,10 @@
 					<section><%= comment.commentHead.comment_text %></section>
 					<footer class="footer">
 						<small><%= comment.commentHead.comment_time %></small>
-						<% if ( user_name != comment.commentHead.comment_author ) { %>
+						<% if ( user.user_name != comment.commentHead.comment_author ) { %>
 							<span relative_comment=<%= comment.commentHead.comment_id %> reply_author=<%= comment.commentHead.comment_author %> class="reply-btn">回复</span>
 						<% } %>
-						<% if(user_name == comment.commentHead.comment_author || user_name == article.author) { %>
+						<% if(user.user_name == comment.commentHead.comment_author || user.user_name == data.article.author) { %>
 							<span comment_id=<%= comment.commentHead.comment_id %> class="delete-btn">删除</span>
 						<% } %>	
 					</footer>
@@ -79,10 +79,10 @@
 						<section><%= reply.comment_text %></section>
 						<footer class="footer">
 							<small><%= reply.comment_time %></small>
-							<% if ( user_name != reply.comment_author ) { %>
+							<% if ( user.user_name != reply.comment_author ) { %>
 								<span relative_comment=<%= comment.commentHead.comment_id %> reply_author=<%= comment.commentHead.comment_author %> class="reply-btn">回复</span>
 							<% } %>
-							<% if(user_name == reply.comment_author || user_name == article.author) { %>
+							<% if(user.user_name == reply.comment_author || user.user_name == data.article.author) { %>
 								<span comment_id=<%= reply.comment_id %> class="delete-btn">删除</span>
 							<% } %>	
 						</footer>
@@ -106,7 +106,7 @@
 
 	<div id="newComment" class="hide"></div>
 	<div class="comment clear">
-		<p class="float-left comment-author"><em><%= user_name %></em></p>
+		<p class="float-left comment-author"><em><%= user.user_name %></em></p>
 		<div>
 			<section><textarea id="commentarea" required name="comment_text" id="comment_text" cols="75" rows="3"></textarea></section>
 			<footer class="">
@@ -118,7 +118,7 @@
     <script type="text/javascript" src="/public/js/jquery-1.12.1.min.js"></script>
     <script type="text/javascript" src="/public/js/common.js"></script>
     <script type="text/javascript">
-    	var username = '<%= user_name %>',
+    	var username = '<%= user.user_name %>',
     		reply_author,
     		relative_comment,
     		time,
@@ -130,7 +130,7 @@
     		var text = $('#commentarea').val();
     		time = new Date();
     		if (text) {
-    			var article_id = <%= article.article_id %>;
+    			var article_id = <%= data.article.article_id %>;
     			$.post('/article/comment/' + article_id, { 'comment_text': text, 'comment_time': time }, function(data) {
     				if (typeof data == 'string') {
     					$('.message').html(data).fadeIn();
@@ -175,7 +175,7 @@
 
     		$('#confirm').off('click');
     		$('#confirm').on('click', function () {
-    			$('#delete_blog').attr('href', "/article/delete/<%= article.article_id %>");
+    			$('#delete_blog').attr('href', "/article/delete/<%= data.article.article_id %>");
     			$('#delete').click();
     		});
     	});
@@ -215,7 +215,7 @@
 				$('#confirm').on('click', function () {
 					$.post('/comment/delete/1', {'comment_id': comment_id}, function(data) {
 						$(that).parents('[name="comment_body"]').remove();
-						console.log(11);
+						console.log(comment_id);
 						closeOverlay();
 						console.log('删除回复成功');
 					});
@@ -247,8 +247,7 @@
 			event.preventDefault();
 			var text = $(this).parent().siblings().children('#replyarea').val();
 			if (text) {
-				var article_id = <%= article.article_id %>;
-				console.log(relative_comment);
+				var article_id = <%= data.article.article_id %>;
 				$.post('/article/reply/' + article_id, { 'relative_comment': relative_comment, 'comment_text': text, 'comment-author': username, 'comment_time': time, 'reply_author': reply_author }, function(data) {
 					if (typeof data != 'string') {
 						var html = '<div class="comment-reply"><p class="float-left comment-author"><em>' 

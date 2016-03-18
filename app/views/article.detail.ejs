@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/public/css/common.css">
+    <link rel="stylesheet" href="/public/css/article_detail.css">
+    <title><%= title %></title>
+</head>
+<body>
+    <% include common/_header %>
+    <section class="container">
+        <aside class="aside"></aside>
+        <section class="section">
+            <header>
+                <h3><%- data.article.title %></h3>
+                <p><span>发表于&nbsp;<em><%= data.article.publish_time %></em></span><span>作者：<span><%= data.article.author %></span></span></p>
+            </header>
+            <section>
+                <article><%- data.article.content %></article>
+                <% if (data.isSelf) { %>
+                    <div id="operation">
+                        <a href="/article/edit/<%= data.article.article_id %>">
+                                <input id="edit" type="button" value="修改" />
+                        </a>
+                        &nbsp;&nbsp;&nbsp;
+                        <a id="delete_blog">
+                                <input id="delete" type="button" value="删除" />
+                        </a>
+                    </div>
+                <% } %>
+            </section>
+            <footer class="comment"></footer>
+        </section>
+    </section>
+    <%- include common/_footer %>
+    <script type="text/javascript" src="/public/js/jquery-1.12.1.min.js"></script>
+    <script type="text/javascript" src="/public/js/common.js"></script>
+</body>
+</html>

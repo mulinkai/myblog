@@ -1,88 +1,57 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <meta charset='utf-8' />
-
-    <link rel="stylesheet" type="text/css" href="/public/css/common.css">
-
-    <style type="text/css">
-        *{
-            margin: 0px;
-            padding: 0px;
-        }
-        body{
-            margin: 10px;
-            padding: 5px;
-        }
-        header{
-            text-align: right;
-            padding: 5px;
-        }
-        a{
-            margin: 0px 10px;
-            text-decoration: none;
-        }
-        a:hover{text-decoration: underline;}
-        section{
-            text-align: center;
-            position: relative;
-            margin-top: 30px;
-            padding-top: 20px;
-        }
-        section div{
-            margin: 45px auto;
-            width: 70%;
-            text-align: left;
-        }
-        section button {
-            position: absolute;
-            top: 10px;
-            right: 50px;
-        }
-        section button a {
-            color: black;
-        }
-        article{
-            margin: 20px 0;
-        }
-        article p{
-            margin-left: 25px;
-            font-size: 0.8em;
-        }     
-    </style>
-  </head>
-  <body>
-    <header>
-        <% if (isLogin) { %>
-          <span>欢迎您，<%= user.user_name %></span>
-          <a href="/logout">退出登录</a>
-        <% } else { %>
-            <a href="/login">登录</a>
-            <a href="/signup">注册</a>
-        <% } %>
-    </header>
-    <hr />
-    <section>
-        <button>
-            <a href="/article/create">发表文章</a>
-        </button>
-        <h2>欢迎来到我的博客</h2>
-        <div>
-            <% if (count) { var i = 1; %>
-                <% articles.forEach (function(article) { %>
-                    <article>
-                        <h3><a href="/article/<%= article.article_id %>"><%= i %>、<%= article.title %></a></h3>
-                        <p><%= article.content %></p>
-                    </article>
-                <% i++ }); %>
-            <% } %>
-        </div>
-    </section>
-    <div class="pages">
-        <a href="/">首页</a>
-        <a onclick="history.back();">后退</a>
-        <a onclick="history.forward();">前进</a>
-    </div>
-  </body>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE-edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/public/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/public/css/common.css">
+	<link rel="stylesheet" href="/public/css/index.css">
+	<title><%= title %></title>
+</head>
+<body>
+	<% include common/_header %>
+	<section class="container">
+        <aside class="aside">
+        	<a onclick="beforePublish(<%= isLogin %>)" class="btn btn-blue"><i class="icon-pencil"></i></span>&nbsp;&nbsp;写文章</a>
+        	<% if(isLogin) { %>
+	    		<div class="aboutme">
+	    			<span><%= user.user_name %><br>我的年龄:30天</span>
+	    			<span>原创(5)</span>
+	    			<span>收藏(10)</span>
+	    		</div>
+	    	<% } %>
+        	<div class="recommend">
+        		<h3>热搜榜</h3>
+        		<ul>
+        			<li><a><span class="glyphicon glyphicon-tint"></span>&nbsp;&nbsp; 乐视高管大调整，你需要关注哪些细节？</a></li>
+        			<li><a><span class="glyphicon glyphicon-tint"></span>&nbsp;&nbsp; 2016年，线下市场才是小米的胜负手</a></li>
+        			<li><a><span class="glyphicon glyphicon-tint"></span>&nbsp;&nbsp; 2015移动互联网人群行为分析报告：高学历白领痴迷网购</a></li>
+        			<li><a><span class="glyphicon glyphicon-tint"></span>&nbsp;&nbsp;中国第一个做O2O的电子商务网站是如何倒闭的</a></li>
+        			<li><a><span class="glyphicon glyphicon-tint"></span>&nbsp;&nbsp; Linux运维细讲之vim的基础使用</a></li>
+        		</ul>
+        	</div>
+        </aside>
+		<section class="section">
+			<ul>
+			      <li class="active"><a href="##">最新</a></li>
+			      <li><a href="##">最热</a></li>
+			</ul>
+			<% if (count) { var i = 1; %>
+	            <% articles.forEach (function(article) { %>
+	            	<div class="card">
+	                    <article>
+	                        <h3><strong><a href="/article/<%= article.article_id %>"><%= i + '、' + article.title %></a></strong></h3>
+	                        <p><%= article.content %><a href="/article/<%= article.article_id %>" class="btn btn-small">查看全文</a></p>
+	                    </article>
+	                    <small><%= article.author %></small><small>发表于<%= article.publish_time %></small><small>11</small><small>22</small><small>33</small>
+	                </div>
+	            <% i++; }); %>
+	        <% } %>
+		</section>
+	</section>
+	<%- include common/_footer %>
+	<script type="text/javascript" src="/public/js/jquery-1.12.1.min.js"></script>
+	<script type="text/javascript" src="/public/js/common.js"></script>
+</body>
 </html>

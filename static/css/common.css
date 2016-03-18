@@ -1,84 +1,183 @@
+html {
+	font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+}
+body {
+  	font-size: 14px;
+}
+body,h3,ul,li {
+	margin: 0;
+	padding: 0;
+}
+input {
+	border-radius: 4px;
+	line-height: 20px;
+	padding: 6px 12px;
+	font-size: 1em;
+}
+a {
+	text-decoration: none;
+}
+ul {
+	list-style: none;
+}
+.main-head {
+	color: white;
+	background: #3852bd;
+	height: 71px;
+	padding: 0 4%;
+}
+.main-head h3 {
+	font-size: 2em;
+	font-weight: 500;
+	line-height: 71px;
+	float: left;
+}
+.main-head ul {
+	float: right;
+}
+.main-head ul li {
+	display: inline-block;
+	margin: 0 5px;
+	padding: 0 5px;
+}
+.main-head li a {
+	font-size: 1.2em;
+	line-height: 31px;
+	margin: 20px 0;
+	display: inline-block;
+	color: #fff;
+	cursor: pointer;
+}
+.main-head li a:only-child:hover {
+	transform: scale(1.15);
+	text-decoration: none;
+	border-bottom: 1px solid #fff;
+}
+#main-msg {
+	position: absolute;
+	top: 71px;
+	width: 100%;
+	height: 42px;
+	color: #02B302;
+}
+#main-msg span {
+	font-weight: bold;
+	padding: 3px 25px;
+	display: inline-block;
+	line-height: 42px;
+	font-size: 1.3em;
+	background: #fff;
+}
+.footer {
+	text-align: center;
+	margin-top: 20px;
+	background: #3852BD;
+	min-height: 60px;
+	color: #fff;
+	line-height: 60px;
+}
+.btn {
+	border: 1px solid transparent;
+	padding: 10px 13px;
+	border-radius: 4px;
+	color: #fff;
+	font-size: 1em;
+	cursor: pointer;
+	text-align: center;
+}
+.btn-default {
+	color: #333;
+}
+.btn-default:hover {
+	border: 1px solid rgba(0, 0, 0, .4);
+}
+.btn-green {
+	background: #5cb85c;
+}
+.btn-green:hover {
+	background: #399039;
+}
+.btn-blue {
+	background: #3852BD;
+	border-color: #3852BD;
+	color: #fff;
+	display: block;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.btn-small {
+	white-space: nowrap;
+	padding: 5px 6px;
+	background: #5B88DE;
+	font-size: 0.8em;
+}
+.btn-small:hover {
+	background: #DE5B5B;
+}
+.hid {
+	visibility: hidden;
+}
+.active {
+	color: #fff;
+	background: #337ab7;
+}
 .overlay {
     position: fixed;
+    z-index: 99;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, .6);
+    background: rgba(0, 0, 0, .75);
+    overflow: auto;
 }
-.overlay>div {
-    border-radius: 5px;
-    width: 20%;
-    height: 14%;
-    background-color: white;
-}
-.perent {
-    position: relative;
-}
-.child {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    text-align: center;
-    vertical-align: middle;
-    padding-top: 20px;
-}
-.pages {
-    position: absolute;
-    top: 80px;
-    left: 50px;
-}
-.hide {
-    display: none;
-}
-.hid {
-    visibility: hidden;
-}
-.comment {
-    margin: 35px 30% 10px 10%;
-}
-.comment-reply {
-    color: #787d82;
-    margin: 35px 30% 10px 16%;
-}
-.comment-author {
-    text-align: center;
-    position: relative;
-    top: -12px;
-    width: 18%;
-    color: black;
-}
-.reply-content {
-    margin:20px 10px 10px 20%;
-}
-.float-left {
-    margin-left: 10px;
-    float: left;
-}
-.clear {
-    clear: both;
-}
-.comment-btn {
-    float: right;
-    margin-right: 22px;
-    cursor: pointer; 
-}
-.reply-btn {
-    float: right;
-    color: #b5b9bc;
-    margin-right: 22px;
-    cursor: pointer; 
-}
-.comment-reply {
+.form {
+	width: 30%;
+	min-width: 400px;
+	display: none;
+	margin: 120px auto;
+	background: #fff;
+	border-radius: 4px;
+    border: 1px solid #888;
+	padding: 15px;
+    box-shadow: 0 0 80px 0 rgba(0,0,0,.4);
 
 }
-.message {
-    background-color: #fcf8e3;
-    color: red;
-    display: block;
-    margin-left: 40%;
-    margin-top: 5px;
-    margin-bottom: 10px;
+.row-self {
+	width: 90%;
+	height: 40px;
+	line-height: 40px;
+	margin: 10px 5%;
+}
+.row-self:first-child {
+	margin-top: 25px;
+}
+.msg {
+	text-align: center;
+	color: red;
+}
+.row-self:first-child span {
+	border: 1px solid rgba(0, 0, 0, .24);
+	display: inline-block;
+	width: 35%;
+	height: 34px;
+	font-size: 1.2em;
+	cursor: pointer;
+	line-height: 34px;
+	margin-left: 10%;
+	text-align: center;
+	border-radius: 4px;
+}
+.row-self:last-child {
+	font-size: 1.2em;
+	text-align: right;
+	margin-top: 24px;
+}
+.row-self label {
+	display: inline-block;
+	width: 27%;
+	text-align: right;
+	padding-right: 10px;
 }

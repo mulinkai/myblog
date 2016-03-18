@@ -1,50 +1,20 @@
-body {
-	margin: 0 0 30px 0;
+.container:after {
+	content: '';
+	display: block;
+	clear: both;
 }
-body header {
-	margin-left: 25px;
-}
-body>section {
-	text-align: center;
-}
-article{
-	width: 80%;
-	word-wrap: break-word;
-	margin: 110px 150px;
-	text-align: left;
-}
-section div {
-	margin-top: 50px;
-}
-a{
-	text-decoration: none;
-}
-p>span {
-	display: inline-block;
-	margin: 0 10px;
-}
-em {
-	color: #800080;
-}
-span span{
-	color: #4180E8;
-}
-header div{
-	position: absolute;
-	right: 30px;
-	top: 30px;
-}
-h2{margin: 0; padding: 15px;font-size: 1.8em;margin-left: 15px;display: inline-block; height: 30px;}
-.align-right {
-	text-align: right;
-	margin-right: 10px;
-}
-.delete-btn {
+.aside {
 	float: right;
-    color: #b5b9bc;
-    margin-right: 22px;
-    cursor: pointer; 
+	margin-top: 15px;
+	margin-right: 20px;
+	width: 30%;
+	min-height: 500px;
+	border: 1px solid black;
 }
-.footer {
-	margin-top: 10px;
+.section{
+	width: 61.8%;
+	border: 1px solid black;
+	min-height: 606px;
+	margin-top: 15px;
+	margin-left: 15px;
 }

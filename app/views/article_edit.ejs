@@ -39,7 +39,7 @@
 		<h3><%= operation %></h3>
 		<div>
 			<% if (isLogin) { %>
-	          <span>欢迎您，<%= user_name %></span>
+	          <span>欢迎您，<%= user.user_name %></span>
 	          <a href="/logout">退出登录</a>
 	        <% } else { %>
 	            <a href="/login">登录</a>

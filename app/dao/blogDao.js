@@ -11,9 +11,56 @@ exports.create = function (title, content, author, handle){
 }
 
 exports.findAll = function (handle) {
-	var sql = "SELECT * FROM article LIMIT 0,20";
+	var sql = "SELECT * FROM article ORDER BY publish_time DESC LIMIT 0,30 ";
 	connection.query(sql, function (err, result){
 		if (err) throw err;
 		handle(result);
 	});
 };
+
+exports.findById = function (article_id, handle){
+	var sql = "SELECT * FROM article WHERE article_id = ?";
+	connection.query(sql, [article_id], function (err, result) {
+		if(err)	throw err;
+		if (result.length < 1) {
+			handle(false);
+		} else{
+			handle(result[0]);
+		};
+	});
+}
+
+exports.validateAuthor = function (username, article_id, handle) {
+	var sql = "SELECT author FROM article WHERE article_id = ?";
+	connection.query(sql, [article_id], function (err, result) {
+		if(err)	throw err;
+		if(result.length > 0 && result[0].author == username)
+			handle(true);
+		else
+			handle(false);
+	});
+}
+
+exports.deleteById = function (article_id, handle) {
+	var sql = "DELETE FROM article WHERE article_id = ?";
+	connection.query(sql, [article_id], function (err, result) {
+		if(err)	throw err;
+		handle();
+	});
+}
+
+exports.update = function (article_id, title, content, handle) {
+	var sql = "UPDATE article SET ? WHERE article_id = ?";
+	connection.query(sql, [ {title: title, content: content}, article_id ], function (err, result) {
+		if(err)	throw err;
+		handle();
+	});
+}
+
+exports.search = function (keyword, handle) {
+	var sql = 'SELECT * FROM article WHERE title LIKE ? OR author = ?';
+	connection.query(sql, ['%' + keyword + '%', keyword], function (err, result) {
+		if(err)	throw err;
+		handle(result);
+	});
+}
