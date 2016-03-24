@@ -76,6 +76,6 @@ exports.logout = function (req, res, next) {
 //登录检测
 exports.loginRequired = function (req, res, next) {
 	if(!req.session.user)
-		return res.redirect('/login');
+		return res.redirect('/');
 	next();
 }

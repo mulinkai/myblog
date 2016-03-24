@@ -1,18 +1,35 @@
-//待删开始
-$('.overlay').click(function (e) {
-	if (e.target == e.currentTarget)
-    	closeOverlay();
+$('.overlay, #cancel').on('click', function(event) {
+	event.preventDefault();
+	if(event.target == event.currentTarget) {
+		closeOverlay();
+	}
+});
+function closeOverlay () {
+	$('.overlay').addClass('hid');
+	$('.form').css('display', 'none');;
+    $('.confirm').addClass('hid');
+}
+function showMessage (msg) {
+	$('#main-msg').find('span').html(msg).parent().slideDown(200);
+	clearTimeout(timeout);
+	var timeout = setTimeout(function () {
+		$('#main-msg').fadeOut(1000);
+	}, 2000);
+}
+$('.toTop').on('click', function(event) {
+	event.preventDefault();
+	$('body, html').animate({'scroll-top': 0}, 500);
 });
 
-function checkForm () {
-	if($('#title') == '' || $('#content' == ''))
-		closeOverlay();
-}
-function closeOverlay () {
-	$('#overlay').addClass('hide');
-}
-//待删结束
+$(document).ready(function() {
+	if($('section.section').height() < $(window).height()*0.7)
+		$('footer.footer').css({
+			position: 'fixed',
+			bottom: '0'
+		});
+});
 
+//登录注册
 $('.row-self:first-child span').first().on('click', changeToSignup);
 $('.row-self:first-child span').last().on('click', changeToLogin);
 $('#btn-signup').on('click', changeToSignup);
@@ -23,6 +40,7 @@ $('.row-self input').on('focus', function(event) {
 	$(this).siblings('i').removeClass('icon-ok icon-remove');
 });
 
+//表单验证开始
 $('.row-self input').on('change', function(event) {
 	event.preventDefault();
 	var name = $(event.target).attr('name');
@@ -75,6 +93,7 @@ $('.row-self input').on('change', function(event) {
 		}
 	}
 });
+//表单验证结束
 $('.row-self input').on('keydown',function (event) {
 	if(event.keyCode == 13)
 		$('#submit').click();
@@ -117,17 +136,10 @@ $('#submit').on('click', function(event) {
 			if(data.status == 2) {
 				$('#msg').html(data.msg);
 				setTimeout(function () {
-					window.location.href = '/'
+					window.location.href = window.location.href;
 				}, 300);
 			}
 		});
-	}
-});
-
-$('.overlay, #cancel').on('click', function(event) {
-	event.preventDefault();
-	if(event.target == event.currentTarget) {
-		$('.overlay').addClass('hid').children('.form').css('display', 'none');
 	}
 });
 
@@ -166,3 +178,14 @@ function beforePublish (token) {
 	else
 		$('#btn-login').click();
 }
+
+//back to top
+$(window).on('scroll', function(event) {
+	event.preventDefault();
+	var scrollTop = $(window).scrollTop();
+	if (scrollTop > 71) {
+		$('.toTop').fadeIn(500);
+	} else{
+		$('.toTop').fadeOut(100);
+	};
+});

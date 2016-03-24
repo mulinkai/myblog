@@ -9,7 +9,8 @@
 
 /* editor's general field */
 .jqte {
-	margin:30px 0;
+	margin:-15px 0;
+	margin-left: 60px;
 	border:#000 1px solid;
 	border-radius:5px; -webkit-border-radius:5px; -moz-border-radius:5px;
 	box-shadow:0 0 3px #999; -webkit-box-shadow:0 0 3px #999; -moz-box-shadow:0 0 3px #999;
@@ -188,7 +189,7 @@
 	width:7px;
 	height:6px;
 	margin:0 auto;
-	background:url(jquery-te.png) -7px -23px no-repeat;
+	background:url(../images/jquery-te.png) -7px -23px no-repeat;
 }
 .jqte_linktypes {
 	display:none;
@@ -338,7 +339,7 @@
 .jqte_editor, .jqte_source {
 	padding:10px;
 	background:#FFF;
-	min-height:100px;
+	min-height:370px;
 	max-height:900px;
 	overflow:auto;
 	outline:none;
@@ -426,7 +427,7 @@
 	width:7px;
 	height:6px;
 	margin:0 auto;
-	background:url(jquery-te.png) 0 -23px no-repeat;
+	background:url(../images/jquery-te.png) 0 -23px no-repeat;
 }
 .jqte_titleText {
 	padding:5px 7px;

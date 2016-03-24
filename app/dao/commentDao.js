@@ -5,7 +5,7 @@ exports.create = function (comment, handle) {
 	var sql = "INSERT INTO COMMENT SET ?";
 	connection.query(sql, comment, function (err, result) {
 		if(err) throw err;
-		handle();
+		handle(result.insertId);
 	});
 }
 
@@ -29,9 +29,23 @@ exports.deleteByArticle = function (article_id) {
 }
 
 exports.deleteById = function (comment_id, handle) {
-	var sql = "DELETE FROM comment WHERE comment_id = ? OR relative_comment = ?";
+	var sql = "SELECT article_id FROM comment WHERE comment_id = ? OR relative_comment = ?";
 	connection.query(sql, [comment_id, comment_id], function (err, result) {
-		if(err)	throw err;
-		handle();
+		console.log(result);
+		var article_id = result[0].article_id;
+		sql = "DELETE FROM comment WHERE comment_id = ? OR relative_comment = ?";
+		connection.query(sql, [comment_id, comment_id], function (err, result) {
+			if(err)	throw err;
+			var counts = result.affectedRows;
+			sql = "SELECT comments FROM article WHERE article_id = ?";
+			connection.query(sql, [article_id], function (err, result) {
+				if(err)	throw	err;
+				sql = "UPDATE article SET ? WHERE article_id = ?";
+				connection.query(sql, [{ comments: result[0].comments-counts }, article_id], function (err, result) {
+					if(err)	throw err;
+				});
+			});
+			handle(article_id);
+		});
 	});
 }

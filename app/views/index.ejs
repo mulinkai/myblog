@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE-edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="/public/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/public/css/font-awesome/font-awesome.min.css">
 	<link rel="stylesheet" href="/public/css/common.css">
 	<link rel="stylesheet" href="/public/css/index.css">
 	<title><%= title %></title>
@@ -44,7 +44,7 @@
 	                        <h3><strong><a href="/article/<%= article.article_id %>"><%= i + '、' + article.title %></a></strong></h3>
 	                        <p><%= article.content %><a href="/article/<%= article.article_id %>" class="btn btn-small">查看全文</a></p>
 	                    </article>
-	                    <small><%= article.author %></small><small>发表于<%= article.publish_time %></small><small>11</small><small>22</small><small>33</small>
+	                    <small><%= article.author %></small><small>发表于<%= article.publish_time %></small><small><%= article.visited %>&nbsp;次浏览</small><small><i class="icon-thumbs-up"></i>&nbsp;点赞(<%= article.recommend %>)</small><small><i class="icon-comment"></i>&nbsp;评论(<%= article.comments %>)</small>
 	                </div>
 	            <% i++; }); %>
 	        <% } %>

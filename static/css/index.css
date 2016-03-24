@@ -110,6 +110,7 @@ ul li a {
 	border-right-style: solid;
 	border-right-color: rgba(56, 82, 189, .35);
 	margin-top: 5px;
+	letter-spacing: 1px;
 }
 .card small:hover {
 	color: rgba(0, 0, 0, .9);

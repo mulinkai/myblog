@@ -5,7 +5,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE-edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="/public/css/common.css">
-	<link rel="stylesheet" type="text/css" href="/public/css/jquery-te-1.4.0.css">
+	<link rel="stylesheet" type="text/css" href="/public/css/wangeditor/wangEditor.min.css">
+  <link rel="stylesheet" href="/public/css/font-awesome/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="/public/css/article_create.css">
 	<title><%= title %></title>
 </head>
@@ -14,12 +15,48 @@
     <section class="container">
         <aside class="aside"></aside>
         <section class="section">
-           
+           <h3>发表文章</h3>
+           <form action="/article/create/<%= article.article_id %>" method="post" class="newblog" onsubmit="return checkContent()">
+           		<div class="row">
+           			<span>标题</span>
+           			<input type="text" name="title" required placeholder="请输入标题" min="3" value="<%= article.title %>">
+           		</div>
+           		<div class="row">
+           			<span>封面</span>
+           			<input type="file" style="opacity:0;width:116px;height:28px;" name="file" accept="image/*">
+           			<span class="btn btn-green">上传图片</span>
+           		</div>
+           		<div class="row">
+           			<span>栏目</span>
+           			<select name="type" id="type">
+           				<option value="前端开发">前端开发</option>
+           				<option value="后端开发">后端开发</option>
+           				<option value="职场/生活">职场/生活</option>
+           				<option value="移动开发">移动开发</option>
+           				<option value="其他类干货">其他类干货</option>
+           			</select>
+           		</div>
+           		<div class="row">
+           			<span>内容</span>
+           			<textarea required name="content" id="content" required>
+                  <%= article.content %>
+                </textarea>
+           		</div>
+           		<div class="row">
+           			<span>标签</span>
+           			<input name="label" disabled type="text">
+           		</div>
+           		<div class="row">
+           			<input type="submit" class="btn btn-green" value="  提交  " >
+                <small>文章提交审核通过后自动发布，审核期间您可以在个人中心我的文章-我的原创中查看文章审核进度</small>
+           		</div>
+           </form>
         </section>
     </section>
     <%- include common/_footer %>
 	<script type="text/javascript" src="/public/js/jquery-1.12.1.min.js"></script>
-	<script type="text/javascript" src="/public/js/jquery-te-1.4.0.min.js"></script>
+	<script type="text/javascript" src="/public/js/wangEditor.min.js"></script>
 	<script type="text/javascript" src="/public/js/common.js"></script>
+	<script type="text/javascript" src="/public/js/article_create.js"></script>
 </body>
 </html>

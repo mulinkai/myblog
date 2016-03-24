@@ -13,7 +13,7 @@ module.exports = {
 			return '两天前';
 		if(monites < 60*24*4)
 			return '三天前';
-		return (date.getMonth()+1) + '月' + date.getDate() + '日';
+		return date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
 	},
 
 	/*getArticleById: function (db, articleId, res) {

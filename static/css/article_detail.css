@@ -1,7 +1,5 @@
-.container:after {
-	content: '';
-	display: block;
-	clear: both;
+h3 {
+	letter-spacing: 2px;
 }
 .aside {
 	float: right;
@@ -9,12 +7,110 @@
 	margin-right: 20px;
 	width: 30%;
 	min-height: 500px;
-	border: 1px solid black;
 }
 .section{
-	width: 61.8%;
-	border: 1px solid black;
+	width: 53.8%;
+	margin-left: 9%;
 	min-height: 606px;
 	margin-top: 15px;
-	margin-left: 15px;
+	color: #333;
+}
+.section header p {
+	padding-right: 35px;
+}
+.section header h3 {
+	color: #14191e;
+	font-size: 1.9em;
+	margin-top: 25px;
+	padding: 10px;
+	font-weight: bolder;
+}
+.section header small {
+	margin: 3px 15px;
+	color: rgba(0, 0, 0, .47);
+}
+.section header span {
+	margin: 3px 15px;
+	float: right;
+	cursor: pointer;
+}
+.section header span:hover {
+	color: red;
+}
+.section section article {
+	margin-top: 35px;
+	padding-left: 25px;
+	line-height: 34px;
+	word-spacing: 1px;
+	font-size: 1.143em;
+	color: #333;
+}
+.section section article h2 {
+	color: #222;
+}
+.section #operation {
+	width: 400px;
+	text-align: center;
+	margin: 15px auto;
+}
+.section #operation a {
+	margin: 15px 25px;
+}
+.comments {
+	letter-spacing: 1px;
+}
+.comments h3 {
+	font-size: 1.8em;
+	margin: 28px 5px;
+}
+.comments .comment, .reply {
+	margin: 24px 0;
+	min-height: 60px;
+	line-height: 28px;
+}
+.comment b, .reply>span {
+	float: left;
+	width: 150px;
+	text-align: center;
+	padding: 3px 0px;
+}
+.user {
+	color: #000;
+}
+.comments p {
+	margin-left: 150px;
+}
+.comments p:after {
+	content: '';
+	display: block;
+	clear: both;
+}
+.comments .reply {
+	color: #787d82;
+	margin-left: 150px;
+}
+.comments textarea {
+	border-radius: 4px;
+	padding: 6px 12px;
+}
+.reply>span {
+	text-align: left;
+}
+.right {
+	float: right;
+}
+span[name="reply-btn"],
+span[name="reply-delete"] {
+	color: #949698;
+	display: inline-block;
+	margin: 0 8px;
+	cursor: pointer;
+}
+span[name="reply-btn"]:hover,
+span[name="reply-delete"]:hover {
+	color: #4A4D50;
+	border-bottom: 2px solid #4A4D50;
+}
+.none {
+	display: none;
 }

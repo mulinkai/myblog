@@ -3,7 +3,15 @@ var connection = connetor.connection || connetor.createConnection();
 
 exports.create = function (title, content, author, handle){
 	var sql = "INSERT INTO ARTICLE SET ?";
-	connection.query(sql, { title: title, author: author, content: content, publish_time: new Date() }, function (err, result) {
+	connection.query(sql, {
+		title: title, 
+		author: author, 
+		content: content, 
+		publish_time: new Date(), 
+		recommend: 0,
+		visited: 0,
+		comments: 0
+	}, function (err, result) {
 		if(err) throw err;
 		console.log("发表成功");
 		handle(result.insertId);
@@ -62,5 +70,28 @@ exports.search = function (keyword, handle) {
 	connection.query(sql, ['%' + keyword + '%', keyword], function (err, result) {
 		if(err)	throw err;
 		handle(result);
+	});
+}
+
+exports.recommend = function (article_id, recommend, handle) {
+	var sql = "UPDATE article SET ? WHERE article_id = ?";
+	recommend = recommend + 1;
+	connection.query(sql, [{recommend: recommend}, article_id], function (err, result) {
+		if(err) throw err;
+		handle();
+	});
+}
+
+exports.addVisitedCounts = function (article_id, visited) {
+	var sql = "UPDATE article SET ? WHERE article_id = ?";
+	connection.query(sql, [ {visited: visited+1}, article_id ], function (err, result) {
+		if(err)	throw err;
+	});
+}
+
+exports.addCommentCounts = function (article_id, comments) {
+	var sql = "UPDATE article SET ? WHERE article_id = ?";
+	connection.query(sql, [ {comments: comments+1}, article_id ], function (err, result) {
+		if(err)	throw err;
 	});
 }

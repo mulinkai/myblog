@@ -2,8 +2,8 @@
 	<h3 class="logo">My Blog</h3>
 	<ul class="main-nav">
 		<li>
-			<form class="" action="/article/search" method="post">
-				<input type="text" required name="keyword" placeholder="输入标题或作者" class="">
+			<form class="" action="/" method="get">
+				<input type="text" name="keyword" placeholder="输入标题或作者" class="">
 				<button type="submit" class="btn btn-green"><i class="icon-search"></i></span>&nbsp;&nbsp;搜索</button>
 			</form>
 		</li>
@@ -60,3 +60,10 @@
 <div id="main-msg" class="msg">
 	<span></span>
 </div>
+<form class="confirm hid" action="" method="post">
+	<h3>确定要删除吗？</h3>
+	<br /><br />
+	<input class="btn btn-blue btn-red" id="confirm" type="submit" value="删除" />
+	&nbsp;
+	<input class="btn btn-default" type="button" value="取消" onclick="closeOverlay();" />
+</form>
