@@ -16,7 +16,7 @@
         <section class="section">
             <header article_id="<%= data.article.article_id %>">
                 <h3><%- data.article.title %></h3>
-                <p><small><%= data.article.author %></small><small><%= data.article.publish_time %></small><small><%= data.article.visited%>次浏览</small><span id="ope-recommend"><i class="icon-thumbs-up">&nbsp;</i>点赞</span><span <% if(data.collect){ %> collected <% } %> id="ope-collect"><i class="icon-star-empty">&nbsp;</i>收藏</span></p>
+                <p><small><%= data.article.author %></small><small><%= data.article.publish_time %></small><small><%= data.article.visited%>次浏览</small><span id="ope-recommend"><i class="icon-thumbs-up">&nbsp;</i><b>点赞</b></span><span <% if(data.collect){ %> collected <% } %> id="ope-collect"><i class="icon-star-empty">&nbsp;</i><b>收藏</b></span></p>
                 <script type="text/javascript">
                     console.log(<%= data.collect %>);
                 </script>

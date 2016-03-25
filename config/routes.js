@@ -23,14 +23,12 @@ module.exports = function (app) {
 	});
 
 	// index
-	app.get('/:keyword?', Index.index);
+	app.get('/', Index.index);
 
 	// USer
-	app.get('/login', User.showLogin);
 	app.post('/login', User.login);
-	app.get('/signup', User.showSignup);
 	app.post('/signup', User.signup);
-	app.get('/logout', User.logout);
+	app.get('/logout', User.logout);//
 
 
 	// Blog
@@ -40,6 +38,7 @@ module.exports = function (app) {
 	app.post('/article/delete/:id', User.loginRequired, Blog.delete);
 	app.post('/article/recommend/:id', Blog.recommend);
 	app.post('/article/collect/:id', Blog.collect);
+	app.get('/search', Blog.search);
 
 	// Comments
 	app.post('/article/comment/:id?', Comment.create);

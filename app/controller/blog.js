@@ -22,6 +22,7 @@ exports.create = function (req, res, next) {
 	var article_id = req.params.id,
 		title = req.body.title,
 		content = req.body.content;
+		//console.log(content);
 	if (article_id != undefined) {
 		blogDao.update(article_id, title, content, function () {
 			console.log("修改成功");
@@ -103,6 +104,20 @@ exports.delete = function (req, res, next) {
 		};
 	});
 }
+//查找博客
+exports.search = function (req, res, next) {
+	var keyword = req.query.keyword;
+	blogDao.search(keyword, function (blogs) {
+		blogs.forEach(function (blog) {
+			if(blog.content.length > 200)
+				blog.content = blog.content.substr(0, 198) + '...';
+			blog.publish_time = helper.dateFormat(blog.publish_time);
+		});
+		res.render('index',{ 'title': 'search', 'articles': blogs, 'count': blogs.length});
+
+	});
+}
+
 //推荐博客
 exports.recommend = function (req, res, next) {
 	if (req.session.user) {

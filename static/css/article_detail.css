@@ -35,7 +35,10 @@ h3 {
 	cursor: pointer;
 }
 .section header span:hover {
-	color: red;
+	color: #fa7d3c;
+}
+.section header span b {
+	font-weight: normal;
 }
 .section section article {
 	margin-top: 35px;

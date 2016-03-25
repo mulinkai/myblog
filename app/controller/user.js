@@ -1,9 +1,9 @@
 var userDao = require('../dao/userDao');
 
 //用户注册
-exports.showSignup = function (req, res, next) {
+/*exports.showSignup = function (req, res, next) {
 	res.render('signup',{'title': 'signup', 'msg': ''});
-}
+}*/
 exports.signup = function (req, res, next) {
 	var user_name = req.body.username;
 	var email = req.body.email;
@@ -34,9 +34,9 @@ exports.signup = function (req, res, next) {
 }
 
 //用户登录
-exports.showLogin = function (req, res, next) {
+/*exports.showLogin = function (req, res, next) {
 	res.render('login',{title: 'login'});
-}
+}*/
 
 exports.login = function (req, res, next) {
 	var user_name = req.body.username;
@@ -62,6 +62,7 @@ exports.login = function (req, res, next) {
 
 //用户登出
 exports.logout = function (req, res, next) {
+	console.log(111);
 	if(req.session.user) {
 		var username = req.session.user.user_name;
 		req.session.user = '';

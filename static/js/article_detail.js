@@ -1,5 +1,5 @@
 $(document).ready(function () {
-	$('#ope-collect[collected]').css('color', 'red')
+	$('#ope-collect[collected]').css('color', '#fa7d3c')
 		.children('i')
 		.removeClass('icon-star-empty')
 		.addClass('icon-star');
@@ -148,7 +148,7 @@ $('#ope-recommend').on('click', function (){
 	if ($(that).attr('recommended') == undefined) {
 		$.post('/article/recommend/' + id, {}, function(data) {
 			if(data) {
-				$(that).attr('recommended', '').css('color', 'red');
+				$(that).attr('recommended', '').css('color', '#fa7d3c');
 				var $span = $('<span>');
 				$span.html('+1')
 					.css({
@@ -184,7 +184,7 @@ $('#ope-collect').on('click', function (){
 				break;
 			case '1':
 				$(that).attr('collected', '')
-					.css('color', 'red')
+					.css('color', '#fa7d3c')
 					.children('i')
 					.removeClass('icon-star-empty')
 					.addClass('icon-star');
