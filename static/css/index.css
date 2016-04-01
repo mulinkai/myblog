@@ -57,12 +57,17 @@
 	margin: 15px 0 10px 20px;
 }
 .aside ul li a {
+	letter-spacing: 1px;
+	font-weight: bold;
 	color: #14191e;
 }
 .aside ul li a:hover {
 	text-decoration: none;
 	color: #C32D20;
 	cursor: pointer;
+}
+.aside ul li a i {
+	color: red;
 }
 .section {
 	margin-left: 60px;

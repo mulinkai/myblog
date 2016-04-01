@@ -57,7 +57,6 @@ exports.delete = function (req, res, next){
 	var comment_id = req.params.comment_id;
 	commentDao.deleteById(comment_id, function (id) {
 		console.log('删除评论成功');
-		var url = '/article/' + id;
-		res.redirect(url);
+		res.end();
 	});
 }

@@ -167,10 +167,6 @@ function changeToSignup () {
 	$('.row-self input').val('').attr('data-status', 'false');
 	$('p#msg').html('');
 }
-$('.section li').on('click', function(event) {
-	event.preventDefault();
-	$(this).addClass('active').siblings('.active').removeClass('active');
-});
 
 function beforePublish (token) {
 	if(token)

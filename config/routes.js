@@ -24,6 +24,8 @@ module.exports = function (app) {
 
 	// index
 	app.get('/', Index.index);
+	app.get('/index', Index.index);
+	app.get('/index/page/:page', Index.index);
 
 	// USer
 	app.post('/login', User.login);

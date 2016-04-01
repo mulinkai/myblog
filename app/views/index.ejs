@@ -22,32 +22,41 @@
 	    		</div>
 	    	<% } %>
         	<div class="recommend">
-        		<h3>热搜榜</h3>
+        		<h3>风云榜</h3>
         		<ul>
-        			<li><a><span class="glyphicon glyphicon-tint"></span>&nbsp;&nbsp; 乐视高管大调整，你需要关注哪些细节？</a></li>
-        			<li><a><span class="glyphicon glyphicon-tint"></span>&nbsp;&nbsp; 2016年，线下市场才是小米的胜负手</a></li>
-        			<li><a><span class="glyphicon glyphicon-tint"></span>&nbsp;&nbsp; 2015移动互联网人群行为分析报告：高学历白领痴迷网购</a></li>
-        			<li><a><span class="glyphicon glyphicon-tint"></span>&nbsp;&nbsp;中国第一个做O2O的电子商务网站是如何倒闭的</a></li>
-        			<li><a><span class="glyphicon glyphicon-tint"></span>&nbsp;&nbsp; Linux运维细讲之vim的基础使用</a></li>
+	    			<% hots.forEach (function(hot) { %>
+	        			<li><a href="/article/<%= hot.article_id %>"><i class=" icon-tint"></i>&nbsp;&nbsp; <%= hot.title %></a></li>
+	    			<% }) %>
         		</ul>
         	</div>
         </aside>
 		<section class="section">
 			<ul>
-			      <li class="active"><a href="##">最新</a></li>
-			      <li><a href="##">最热</a></li>
+			      <li <% if(orderBy == 'latest'){ %>class="active"<% } %>><a href="/">最新</a></li>
+			      <li <% if(orderBy == "'hotest'"){ %>class="active"<% } %>><a href="/index?orderBy='hotest'">最热</a></li>
 			</ul>
-			<% if (count) { var i = 1; %>
+			<% if (articles.length) { var i = 1; %>
 	            <% articles.forEach (function(article) { %>
 	            	<div class="card">
 	                    <article>
-	                        <h3><strong><a href="/article/<%= article.article_id %>"><%= i + '、' + article.title %></a></strong></h3>
+	                        <h3><strong><a href="/article/<%= article.article_id %>"><%= i+15*(index-1) + '、' + article.title %></a></strong></h3>
 	                        <p><%= article.content %><a href="/article/<%= article.article_id %>" class="btn btn-small">查看全文</a></p>
 	                    </article>
 	                    <small><%= article.author %></small><small>发表于<%= article.publish_time %></small><small><%= article.visited %>&nbsp;次浏览</small><small><i class="icon-thumbs-up"></i>&nbsp;点赞(<%= article.recommend %>)</small><small><i class="icon-comment"></i>&nbsp;评论(<%= article.comments %>)</small>
 	                </div>
 	            <% i++; }); %>
 	        <% } %>
+	        <div class="page">
+	        	<a title="上一页" <% if(index>1){ %>href="/index/page/<%= index-1 %>?orderBy=<%= orderBy %>"<% } else{ %>onclick="showMessage('已是最前一页')"<% } %>>
+	        		<i style="font-size: 1.2em;" class="icon-angle-left"></i>
+	        	</a>
+	        	<% for(var i = 1; i <= Math.ceil(counts/15); i++){ %>
+	        		<a href="/index/page/<%= i %>?orderBy=<%= orderBy %>" <% if(index==i){ %>class="active"<% } %>><%= i %></a>
+	        	<% } %>
+	        	<a title="下一页" <% if(index<Math.ceil(counts/15)){ %> href="/index/page/<%= parseInt(index, 10)+1 %>?orderBy=<%= orderBy %>"<% } else{ %>onclick="showMessage('已是最后一页')"<% } %>>
+					<i style="font-size: 1.2em;" class="icon-angle-right"></i>
+	        	</a>
+	        </div>
 		</section>
 	</section>
 	<%- include common/_footer %>

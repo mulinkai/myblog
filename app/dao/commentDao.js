@@ -31,7 +31,6 @@ exports.deleteByArticle = function (article_id) {
 exports.deleteById = function (comment_id, handle) {
 	var sql = "SELECT article_id FROM comment WHERE comment_id = ? OR relative_comment = ?";
 	connection.query(sql, [comment_id, comment_id], function (err, result) {
-		console.log(result);
 		var article_id = result[0].article_id;
 		sql = "DELETE FROM comment WHERE comment_id = ? OR relative_comment = ?";
 		connection.query(sql, [comment_id, comment_id], function (err, result) {

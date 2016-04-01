@@ -2,12 +2,47 @@ var helper = require('./helper');
 var blogDao = require('../dao/blogDao');
 
 exports.index = function (req, res, next) {
-	blogDao.findAll(function (blogs) {
-		blogs.forEach(function (blog) {
-			if(blog.content.length > 200)
-				blog.content = blog.content.substr(0, 198) + '...';
-			blog.publish_time = helper.dateFormat(blog.publish_time);
+	orderBy = req.query.orderBy || 'latest';
+	if(req.params.page == undefined){
+		blogDao.findAll(orderBy, function (blogs) {
+			var counts = blogs.length;
+			blogs = blogs.slice(0, 15);
+			blogs.forEach(function (blog) {
+				if(blog.content.length > 200)
+					blog.content = blog.content.substr(0, 198) + '...';
+				blog.publish_time = helper.dateFormat(blog.publish_time);
+			});
+			blogDao.findHotBlog(7, function (hots) {
+				res.render('index',{ 
+					'title': 'home', 
+					'articles': blogs, 
+					'counts': counts, 
+					'index': 1, 
+					'orderBy': orderBy,
+					'hots': hots
+				});
+			});
 		});
-		res.render('index',{ 'title': 'home', 'articles': blogs, 'count': blogs.length});
-	});
+	} else {
+		var index = req.params.page;
+		blogDao.findAll(orderBy, function (blogs) {
+			var counts = blogs.length;
+			blogs = blogs.slice((index-1)*15, index*15);
+			blogs.forEach(function (blog) {
+				if(blog.content.length > 200)
+					blog.content = blog.content.substr(0, 198) + '...';
+				blog.publish_time = helper.dateFormat(blog.publish_time);
+			});
+			blogDao.findHotBlog(7, function (hots) {
+				res.render('index',{ 
+					'title': 'home', 
+					'articles': blogs, 
+					'counts': counts, 
+					'index': index, 
+					'orderBy': orderBy,
+					'hots': hots
+				});
+			});
+		});
+	}
 }

@@ -18,8 +18,12 @@ exports.create = function (title, content, author, handle){
 	});
 }
 
-exports.findAll = function (handle) {
-	var sql = "SELECT * FROM article ORDER BY publish_time DESC LIMIT 0,30 ";
+exports.findAll = function (orderBy, handle) {
+	if(orderBy == 'latest')
+		orderBy = 'publish_time';
+	else
+		orderBy = 'visited';
+	var sql = "SELECT * FROM article ORDER BY " + orderBy + " DESC";
 	connection.query(sql, function (err, result){
 		if (err) throw err;
 		handle(result);
@@ -35,6 +39,14 @@ exports.findById = function (article_id, handle){
 		} else{
 			handle(result[0]);
 		};
+	});
+}
+
+exports.findHotBlog = function (length, handle) {
+	var sql = "SELECT title,article_id FROM article ORDER BY recommend DESC LIMIT 0,?";
+	connection.query(sql, [length], function (err, result){
+		if (err) throw err;
+		handle(result);
 	});
 }
 
@@ -66,7 +78,7 @@ exports.update = function (article_id, title, content, handle) {
 }
 
 exports.search = function (keyword, handle) {
-	var sql = 'SELECT * FROM article WHERE title LIKE ? OR author = ?';
+	var sql = 'SELECT * FROM article WHERE title LIKE ? OR author = ? ORDER BY publish_time DESC';
 	connection.query(sql, ['%' + keyword + '%', keyword], function (err, result) {
 		if(err)	throw err;
 		handle(result);

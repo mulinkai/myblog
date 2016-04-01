@@ -58,10 +58,18 @@ $('span[name="reply-submit"]').on('click', function(event) {
 					.addClass('right')
 					.html('删除')
 					.on('click', function(event) {
-					event.preventDefault();
-					$('.overlay').removeClass('hid');
-					$('.confirm').attr('action', '/comment/delete/' + data.comment_id).removeClass('hid');
-				}));
+						event.preventDefault();
+						var id = $(this).attr('comment_id'),
+							that = this;
+						$.post('/comment/delete/' + id, {}, function(data) {
+							var i = 0;
+							while($(that).parents('div[class="comment"]').next('div[class="reply"]')[0] != undefined){
+								$(that).parents('div[class="comment"]').next('div[class="reply"]').remove();
+							}
+							$(that).parents('div[class="comment"]').remove();
+						});
+					})
+				);
 			$span.appendTo($reply);
 			$p.appendTo($reply);
 			$reply.insertBefore($position);
@@ -101,9 +109,17 @@ $('#comment-submit').on('click', function(event) {
 						.html('删除')
 						.on('click', function(event) {
 							event.preventDefault();
-							$('.overlay').removeClass('hid');
-							$('.confirm').attr('action', '/comment/delete/' + data.comment_id).removeClass('hid');
-						}));
+							var id = $(this).attr('comment_id'),
+								that = this;
+							$.post('/comment/delete/' + id, {}, function(data) {
+								var i = 0;
+								while($(that).parents('div[class="comment"]').next('div[class="reply"]')[0] != undefined){
+									$(that).parents('div[class="comment"]').next('div[class="reply"]').remove();
+								}
+								$(that).parents('div[class="comment"]').remove();
+							});
+						})
+					);
 				$p.appendTo($div);
 				$div.insertBefore($position);
 				$textarea.val('');
@@ -120,9 +136,15 @@ $('#comment-submit').on('click', function(event) {
 //删除评论或回复
 $('span[name="reply-delete"]').on('click', function (event) {
 	event.preventDefault();
-	var id = $(this).attr('comment_id');
-	$('.overlay').removeClass('hid');
-	$('.confirm').attr('action', '/comment/delete/' + id).removeClass('hid');
+	var id = $(this).attr('comment_id'),
+		that = this;
+	$.post('/comment/delete/' + id, {}, function(data) {
+		var i = 0;
+		while($(that).parents('div[class="comment"]').next('div[class="reply"]')[0] != undefined){
+			$(that).parents('div[class="comment"]').next('div[class="reply"]').remove();
+		}
+		$(that).parents('div[class="comment"]').remove();
+	});
 });
 
 //删除文章
@@ -141,7 +163,7 @@ function loginRequired () {
 		return true;
 	}
 }
-//推荐
+//点赞
 $('#ope-recommend').on('click', function (){
 	var that = this;
 	var id = $(that).parents('header').attr('article_id');

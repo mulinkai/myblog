@@ -4,7 +4,7 @@ $(document).ready(function () {
 });
 function checkContent () {
 	var length = $('.wangEditor-txt').html().length;
-	console.log($('.wangEditor-txt').html());
+	console.log($('.wangEditor-txt').html().length);
 	if(length < 100) {
 		showMessage('文章内容过少');	
 		return false;
@@ -15,3 +15,6 @@ function checkContent () {
 		return true;
 	}
 }
+$('#upload').on('click', function () {
+	$(this).siblings('input').click();
+});
