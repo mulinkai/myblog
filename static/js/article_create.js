@@ -18,3 +18,20 @@ function checkContent () {
 $('#upload').on('click', function () {
 	$(this).siblings('input').click();
 });
+function addPicture () {
+	var file = $("input[name='file']")[0].files[0];
+
+	var r = new FileReader();
+	r.readAsDataURL(file); //Base64
+	if($('#thumbnail')[0] == undefined)
+		$(r).load(function(){
+			$('<div><img id="thumbnail" style="margin-left:78px;" src="'+r.result+'" width="80" height="80" /><i class="icon-plus" onclick="removeThumbnail(this)"></i></div>').insertAfter($('#upload').parent());
+		})
+	else
+		$(r).load(function(){
+			$('#thumbnail').attr('src', r.result);
+		})
+}
+function removeThumbnail (remove) {
+	$(remove).parent().remove();
+}

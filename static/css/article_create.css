@@ -42,10 +42,6 @@
 	margin-left: 15px;
 }
 
-.section .row:nth-child(2) span:last-child {
-	position: relative;
-	left: -28px;
-}
 .section .row:last-child input {
 	margin-left: 120px;
 	width: 85px;
@@ -69,3 +65,17 @@
 	min-height: 315px;
 	max-height: 675px;
 }
+#thumbnail~i {
+	cursor: pointer;
+	position: relative;
+	top: -69px;
+	left: -7px;
+	color: #fff;
+	padding: 2px 0px 0px 3px;
+	width: 15px;
+	height: 15px;
+	background: red;
+	border-radius: 15px;
+	display: inline-block;
+	transform: rotate(45deg);
+};
