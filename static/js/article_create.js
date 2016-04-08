@@ -1,6 +1,19 @@
 $(document).ready(function () {
 	var editor = new wangEditor('content');
     editor.create();
+
+    var labels = [
+    	'Android',
+    	'AngularJS',
+    	'Bootstrap',
+    	'C',
+    	'C#',
+    	'C++',
+    	'Cocos2d-x',
+    	'CSS3',
+    	'Go',
+    ];
+    labels.foreach();
 });
 function checkContent () {
 	var length = $('.wangEditor-txt').html().length;
@@ -34,4 +47,5 @@ function addPicture () {
 }
 function removeThumbnail (remove) {
 	$(remove).parent().remove();
+	$('input[type="file"]').val('');
 }

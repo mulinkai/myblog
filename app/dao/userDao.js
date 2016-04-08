@@ -11,7 +11,7 @@ exports.validateUsername = function (user_name, handle) {
 }
 
 //新建用户
-exports.create = function (user_name, email, password, handle){
+exports.create = function (user_name, email, password, handle) {
 	var sql = "INSERT INTO user set ?";
 	connection.query(sql, { 'user_name': user_name, 'email': email, password: password, signup_time: new Date() }, function (err, result) {
 		if(err) throw err;
@@ -25,5 +25,14 @@ exports.login = function (user_name, pass, handle) {
 	connection.query(sql,[user_name,pass],function (err, result){
 		if(err) throw err;
 		handle(result[0]);
+	});
+}
+
+//查询用户注册时间
+exports.queryOld = function (user_id, handle) {
+	var sql = "SELECT signup_time FROM user WHERE user_id = ?";
+	connection.query(sql, [user_id], function (err, result) {
+		if (err) throw err;
+		handle(result[0].signup_time);
 	});
 }

@@ -1,4 +1,6 @@
 var userDao = require('../dao/userDao');
+var blogDao = require('../dao/blogDao');
+var helper = require('./helper');
 
 //用户注册
 /*exports.showSignup = function (req, res, next) {
@@ -62,7 +64,6 @@ exports.login = function (req, res, next) {
 
 //用户登出
 exports.logout = function (req, res, next) {
-	console.log(111);
 	if(req.session.user) {
 		var username = req.session.user.user_name;
 		req.session.user = '';
@@ -72,6 +73,22 @@ exports.logout = function (req, res, next) {
 	} else {
 		res.redirect('/');
 	}
+}
+
+//查询用户注册时间
+exports.queryOld = function (req, res, next) {
+	userDao.queryOld(req.query.id, function (old) {
+		old = helper.oldFormat(old);
+		res.send(old);
+	});
+}
+
+//查询用户发表文章数
+exports.queryBlogAccount = function (req, res, next) {
+	blogDao.queryBlogAccount(req.query.id, function (old) {
+		old = helper.oldFormat(old);
+		res.send(old);
+	});
 }
 
 //登录检测

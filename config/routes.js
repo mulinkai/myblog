@@ -30,7 +30,8 @@ module.exports = function (app) {
 	// USer
 	app.post('/login', User.login);
 	app.post('/signup', User.signup);
-	app.get('/logout', User.logout);//
+	app.get('/logout', User.logout);
+	app.get('/queryOld', User.queryOld);
 
 
 	// Blog

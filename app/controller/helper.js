@@ -15,6 +15,12 @@ module.exports = {
 			return '三天前';
 		return date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
 	},
+	oldFormat: function(old) {
+		var start = new Date(old).getTime(),
+			end = new Date().getTime(),
+			days = Math.floor((end-start)/1000/60/60/24);
+			return days + '天';
+	}
 
 	/*getArticleById: function (db, articleId, res) {
 		// query article

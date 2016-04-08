@@ -22,7 +22,7 @@ exports.create = function (req, res, next) {
 	var article_id = req.params.id,
 		title = req.body.title,
 		content = req.body.content;
-		//console.log(content);
+		console.log(req.files);
 	if (article_id != undefined) {
 		blogDao.update(article_id, title, content, function () {
 			console.log("修改成功");

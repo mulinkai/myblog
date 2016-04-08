@@ -16,7 +16,8 @@
         	<a onclick="beforePublish(<%= isLogin %>)" class="btn btn-blue"><i class="icon-pencil"></i></span>&nbsp;&nbsp;写文章</a>
         	<% if(isLogin) { %>
 	    		<div class="aboutme">
-	    			<span><%= user.user_name %><br>我的年龄:30天</span>
+	    			<div><%= user.user_name %></div>
+	    			<span>我的年龄:<span id="old"></span></span>
 	    			<span>原创(5)</span>
 	    			<span>收藏(10)</span>
 	    		</div>
@@ -62,5 +63,6 @@
 	<%- include common/_footer %>
 	<script type="text/javascript" src="/public/js/jquery-1.12.1.min.js"></script>
 	<script type="text/javascript" src="/public/js/common.js"></script>
+	<script type="text/javascript" src="/public/js/index.js"></script>
 </body>
 </html>

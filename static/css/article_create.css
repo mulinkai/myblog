@@ -66,15 +66,16 @@
 	max-height: 675px;
 }
 #thumbnail~i {
+	font-size: 0.5em;
 	cursor: pointer;
 	position: relative;
-	top: -69px;
+	top: -76px;
 	left: -7px;
 	color: #fff;
-	padding: 2px 0px 0px 3px;
-	width: 15px;
-	height: 15px;
-	background: red;
+	padding: 3px 0px 0px 3px;
+	width: 13px;
+	height: 13px;
+	background: rgba(255, 0, 0, .75);
 	border-radius: 15px;
 	display: inline-block;
 	transform: rotate(45deg);

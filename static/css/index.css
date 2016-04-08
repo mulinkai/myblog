@@ -12,23 +12,25 @@
 	margin-top: 37px;
 	background: rgba(177, 27, 27, .78);
 	border-radius: 3px;
-	height: 50px;
 	box-shadow: 2px 2px rgba(0, 0, 0, .6);
 	border: 1px solid rgba(0, 0, 0, .12);
 	padding: 25px 0;
 	margin-right: 0;
 	margin-left: 0;
-}
-.aboutme span {
-	border-left: 1px solid rgba(0, 0, 0, .12);
 	color: #fff;
-	line-height: 50px;
+}
+.aboutme>div {
+	text-align: center;
+}
+.aboutme>span {
+	border-left: 1px solid rgba(0, 0, 0, .12);
+	line-height: 60px;
 	text-align: center;
     display: inline-block;
-    width: 32%;
+    width: 30%;
 }
-.aboutme span:first-child {
-	line-height: 20px;
+.aboutme>span:first-of-type {
+	line-height: 30px;
 	border-left: none;
 }
 .recommend {

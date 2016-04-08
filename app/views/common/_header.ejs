@@ -9,7 +9,7 @@
 		</li>
 		<% if(isLogin) {%>
 			<li>
-				<a>欢迎您，<%= user.user_name %>&nbsp;&nbsp;</a><br>
+				<a id="welcome" data-user-id=<%= user.user_id %>>欢迎您，<%= user.user_name %>&nbsp;&nbsp;</a><br>
 			</li>
 			<li><a href="/">首页</a></li>
 			<li>
