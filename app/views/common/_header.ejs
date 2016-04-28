@@ -2,7 +2,7 @@
 	<h3 class="logo">My Blog</h3>
 	<ul class="main-nav">
 		<li>
-			<form class="" action="/search" method="get">
+			<form class="" action="/index" method="get">
 				<input type="text" name="keyword" placeholder="输入标题或作者" class="">
 				<button type="submit" class="btn btn-green"><i class="icon-search"></i></span>&nbsp;&nbsp;搜索</button>
 			</form>
@@ -50,6 +50,16 @@
 			<label class="">确认密码</label>
 			<input data-status="false" id="repass" class="col-md-5" name="repass" type="password" placeholder="再次输入密码" required />
 			<i></i>
+		</div>
+		<div class="row-self">
+			<label class="">验证码</label>
+			<input data-status="false" id="captcha" class="col-md-5" name="captcha" type="text" required />
+			<i></i>
+		</div>
+		<div class="row-self">
+			<label class=""></label>
+			<img id="captcha-img" src="/captchar/get?width=120&height=35" alt="" height="40" width="120">
+			<a class="btn-captcha" href="javascript:;" onclick="change()">看不清，换一张</a>
 		</div>
 		<div class="row-self">
 			<button id="cancel" type="button" class="btn btn-default">取消</button>

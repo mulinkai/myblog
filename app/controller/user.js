@@ -1,5 +1,6 @@
 var userDao = require('../dao/userDao');
 var blogDao = require('../dao/blogDao');
+var collectDao = require('../dao/collectDao');
 var helper = require('./helper');
 
 //用户注册
@@ -73,21 +74,47 @@ exports.logout = function (req, res, next) {
 	} else {
 		res.redirect('/');
 	}
-}
+};
+
+//查询用户信息
+exports.queryInfo = function (req, res, next) {
+	var user_id = req.query.id,
+		info = {},
+		myres = res;
+		/*console.log(111);
+		res.send({old: 32});*/
+	Promise.all([queryOld(user_id, info), queryAccount(user_id, info), queryCollectionAccout(user_id, info)]).then(function (res) {
+		myres.send(info);
+	});
+};
 
 //查询用户注册时间
-exports.queryOld = function (req, res, next) {
-	userDao.queryOld(req.query.id, function (old) {
-		old = helper.oldFormat(old);
-		res.send(old);
+function queryOld (user_id, info) {
+	return new Promise(function(resolve, reject) {
+		userDao.queryOld(user_id, function (old) {
+			info.old = helper.oldFormat(old);
+			resolve(1);
+		});
 	});
 }
 
 //查询用户发表文章数
-exports.queryBlogAccount = function (req, res, next) {
-	blogDao.queryBlogAccount(req.query.id, function (old) {
-		old = helper.oldFormat(old);
-		res.send(old);
+function queryAccount (user_id, info) {
+	return new Promise(function(resolve, reject) {
+		blogDao.queryAccount(user_id, function (account) {
+			info.account = account;
+			resolve(2);
+		});
+	});
+}
+
+//查询用户收藏文章数
+function queryCollectionAccout (user_id, info) {
+	return new Promise(function(resolve, reject) {
+		collectDao.queryCollectionAccout(user_id, function (account) {
+			info.collection = account;
+			resolve(3);
+		});
 	});
 }
 
@@ -96,4 +123,4 @@ exports.loginRequired = function (req, res, next) {
 	if(!req.session.user)
 		return res.redirect('/');
 	next();
-}
+};

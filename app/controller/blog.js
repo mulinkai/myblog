@@ -2,6 +2,8 @@ var helper = require('./helper');
 var blogDao = require('../dao/blogDao');
 var commentDao = require('../dao/commentDao');
 var collectDao = require('../dao/collectDao');
+var fs = require('fs');
+var Busboy = require('busboy');
 
 //发表博客
 exports.showCreate = function (req, res, next) {
@@ -16,13 +18,13 @@ exports.showCreate = function (req, res, next) {
 			}
 		});
 	}
-}
+};
 
 exports.create = function (req, res, next) {
 	var article_id = req.params.id,
 		title = req.body.title,
 		content = req.body.content;
-		console.log(req.files);
+	var busboy = new Busboy({ headers: req.headers });
 	if (article_id != undefined) {
 		blogDao.update(article_id, title, content, function () {
 			console.log("修改成功");
@@ -32,9 +34,46 @@ exports.create = function (req, res, next) {
 	} else{
 		var author = req.session.user.user_name;
 		blogDao.create(title, content, author, function (id){
+			busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+				var buffer = new Buffer('');
+				file.on('data', function (data) {
+					buffer = Buffer.concat([buffer, data]);
+				});
+				file.on('end', function () {
+					var temp = filename.split('.'),
+					path = '/static/images/blogs/' + id + '.' + temp[temp.length - 1];
+					fs.writeFile(path, buffer, function (err) {
+				  		if (err) return next(err);
+				  		console.log('File successfully uploaded!');
+					});
+				});
+			});
+			req.pipe(busboy);
 			res.redirect('/article/' + id);
 		});
 	};
+}
+
+exports.uploadCover = function (req, res, next) {
+	var busboy = new Busboy({ headers: req.headers });
+	busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+		var buffer = new Buffer('');
+		file.on('data', function (data) {
+			buffer = Buffer.concat([buffer, data]);
+		});
+		file.on('end', function () {
+			var temp = filename.split('.'),
+			path = '/static/images/blogs/' + id + '.' + temp[temp.length - 1];
+			fs.writeFile(path, buffer, function (err) {
+		  		if (err) return next(err);
+		  		console.log('File successfully uploaded!');
+			});
+		});
+	});
+	req.pipe(busboy);
+	res.send({
+		msg: "success"
+	});
 }
 
 //阅读博客
@@ -106,6 +145,51 @@ exports.delete = function (req, res, next) {
 }
 //查找博客
 exports.search = function (req, res, next) {
+	orderBy = req.query.orderBy || 'latest';
+	if(req.params.page == undefined){
+		blogDao.findAll(orderBy, function (blogs) {
+			var counts = blogs.length;
+			blogs = blogs.slice(0, 15);
+			blogs.forEach(function (blog) {
+				if(blog.content.length > 200)
+					blog.content = blog.content.substr(0, 198) + '...';
+				blog.publish_time = helper.dateFormat(blog.publish_time);
+			});
+			blogDao.findHotBlog(7, function (hots) {
+				res.render('index',{ 
+					'title': 'home', 
+					'articles': blogs, 
+					'counts': counts, 
+					'index': 1, 
+					'orderBy': orderBy,
+					'hots': hots
+				});
+			});
+		});
+	} else {
+		var index = req.params.page;
+		blogDao.findAll(orderBy, function (blogs) {
+			var counts = blogs.length;
+			blogs = blogs.slice((index-1)*15, index*15);
+			blogs.forEach(function (blog) {
+				if(blog.content.length > 200)
+					blog.content = blog.content.substr(0, 198) + '...';
+				blog.publish_time = helper.dateFormat(blog.publish_time);
+			});
+			blogDao.findHotBlog(7, function (hots) {
+				res.render('index',{ 
+					'title': 'home', 
+					'articles': blogs, 
+					'counts': counts, 
+					'index': index, 
+					'orderBy': orderBy,
+					'hots': hots
+				});
+			});
+		});
+	}
+
+	
 	var keyword = req.query.keyword;
 	blogDao.search(keyword, function (blogs) {
 		blogs.forEach(function (blog) {
@@ -113,8 +197,14 @@ exports.search = function (req, res, next) {
 				blog.content = blog.content.substr(0, 198) + '...';
 			blog.publish_time = helper.dateFormat(blog.publish_time);
 		});
-		res.render('index',{ 'title': 'search', 'articles': blogs, 'count': blogs.length});
-
+		blogDao.findHotBlog(7, function (hots) {
+			res.render('index',{ 
+				'title': 'home', 
+				'articles': blogs, 
+				'counts': blogs.length,
+				'hots': hots
+			});
+		});
 	});
 }
 

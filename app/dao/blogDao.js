@@ -18,17 +18,32 @@ exports.create = function (title, content, author, handle){
 	});
 }
 
-exports.findAll = function (orderBy, handle) {
-	if(orderBy == 'latest')
-		orderBy = 'publish_time';
-	else
-		orderBy = 'visited';
-	var sql = "SELECT * FROM article ORDER BY " + orderBy + " DESC";
-	connection.query(sql, function (err, result){
+exports.findAll = function (orderBy, keyword, handle) {
+	orderBy = (orderBy == 'latest') ? 'publish_time' : 'visited';
+	var sql ='',
+		options = [];
+	if(keyword == undefined || !keyword) {
+		sql = "SELECT * FROM article ORDER BY " + orderBy + " DESC";
+	}
+	else {
+		sql = "SELECT * FROM article WHERE title LIKE ? OR author = ? ORDER BY " + orderBy + " DESC";
+		options.push('%' + keyword + '%');
+		options.push(keyword);
+	}
+	connection.query(sql, options, function (err, result){
 		if (err) throw err;
 		handle(result);
 	});
+
 };
+
+exports.search = function (keyword, handle) {
+	var sql = 'SELECT * FROM article WHERE title LIKE ? OR author = ? ORDER BY publish_time DESC';
+	connection.query(sql, ['%' + keyword + '%', keyword], function (err, result) {
+		if(err)	throw err;
+		handle(result);
+	});
+}
 
 exports.findById = function (article_id, handle){
 	var sql = "SELECT * FROM article WHERE article_id = ?";
@@ -77,14 +92,6 @@ exports.update = function (article_id, title, content, handle) {
 	});
 }
 
-exports.search = function (keyword, handle) {
-	var sql = 'SELECT * FROM article WHERE title LIKE ? OR author = ? ORDER BY publish_time DESC';
-	connection.query(sql, ['%' + keyword + '%', keyword], function (err, result) {
-		if(err)	throw err;
-		handle(result);
-	});
-}
-
 exports.recommend = function (article_id, recommend, handle) {
 	var sql = "UPDATE article SET ? WHERE article_id = ?";
 	recommend = recommend + 1;
@@ -107,3 +114,15 @@ exports.addCommentCounts = function (article_id, comments) {
 		if(err)	throw err;
 	});
 }
+
+exports.queryAccount = function (user_id, handle) {
+	var sql = "SELECT user_name FROM user WHERE user_id = ?";
+	connection.query(sql, [user_id], function (err, result) {
+		var user_name = result[0].user_name;
+		sql = "SELECT article_id FROM article WHERE  author= ?";
+		connection.query(sql, [user_name], function (err, result) {
+			if(err)	throw err;
+			handle(result.length);
+		});
+	});
+};

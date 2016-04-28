@@ -22,7 +22,7 @@ $('.toTop').on('click', function(event) {
 });
 
 $(document).ready(function() {
-	if($('section.section').height() < $(window).height()*0.7)
+	if($('section.section').height() < $(window).height()*0.6)
 		$('footer.footer').css({
 			position: 'fixed',
 			bottom: '0'
@@ -94,6 +94,7 @@ $('.row-self input').on('change', function(event) {
 	}
 });
 //表单验证结束
+
 $('.row-self input').on('keydown',function (event) {
 	if(event.keyCode == 13)
 		$('#submit').click();
@@ -144,11 +145,12 @@ $('#submit').on('click', function(event) {
 });
 
 function changeToLogin () {
+	change();
 	$('.row-self:first-child span').removeClass('active').eq(1).addClass('active');
-	$('.overlay').removeClass('hid').children('.form').slideDown(250);
-	$('.row-self input[name="password"]').attr('placeholder', '');
 	$('.row-self').has('input[name="email"]').addClass('hid');
 	$('.row-self').has('input[name="repass"]').addClass('hid');
+	$('.overlay').removeClass('hid').children('.form').slideDown(250);
+	$('.row-self input[name="password"]').attr('placeholder', '');
 	$('.row-self button').last().html('登录').attr('data-src', '/login');
 	$('.row-self i').removeClass('icon-remove icon-ok');
 	$('.row-self input').val('').attr('data-status', 'false');
@@ -157,10 +159,11 @@ function changeToLogin () {
 	$('p#msg').html('');
 }
 function changeToSignup () {
+	change();
 	$('.row-self:first-child span').removeClass('active').eq(0).addClass('active');
-	$('.overlay').removeClass('hid').children('.form').slideDown(250);
 	$('.row-self').has('input[name="email"]').removeClass('hid');
 	$('.row-self').has('input[name="repass"]').removeClass('hid');
+	$('.overlay').removeClass('hid').children('.form').slideDown(250);
 	$('.row-self input[name="password"]').attr('placeholder', '不少于6个字符');
 	$('.row-self button').last().html('注册').attr('data-src', '/signup');
 	$('.row-self i').removeClass('icon-remove icon-ok');
@@ -175,6 +178,10 @@ function beforePublish (token) {
 		$('#btn-login').click();
 }
 
+function change () {
+	$('#captcha-img').attr('src', '/captchar/get?width=120&height=35&' + new Date().getTime());
+}
+
 //back to top
 $(window).on('scroll', function(event) {
 	event.preventDefault();
@@ -183,5 +190,14 @@ $(window).on('scroll', function(event) {
 		$('.toTop').fadeIn(500);
 	} else{
 		$('.toTop').fadeOut(100);
-	};
+	}
+});
+
+$(window).on('mousemove', function (e) {
+	if(e.clientY < 60){
+		$('.main-head').addClass('main-head-fixed').animate({height: '61px', opacity: 1}, 400);
+	}
+	else{
+		$('.main-head-fixed').removeClass('main-head-fixed');
+	}
 });

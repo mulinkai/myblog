@@ -7,14 +7,16 @@ exports.create = function (article_id, user_id, handle) {
 		if(err)	throw err;
 		handle();
 	});
-}
+};
+
 exports.delete = function (id, handle) {
 	var sql = 'DELETE FROM collection WHERE collection_id = ?';
 	connection.query(sql, [id], function (err, result) {
 		if(err)	throw err;
 		handle();
 	});
-}
+};
+
 
 exports.find = function (article_id, user_id, handle) {
 	var sql = 'SELECT collection_id FROM collection WHERE article_id = ? AND user_id = ?';
@@ -25,4 +27,12 @@ exports.find = function (article_id, user_id, handle) {
 		else
 			handle(-1);
 	});
-}
+};
+
+exports.queryCollectionAccout = function (user_id, handle) {
+	var sql = "SELECT collection_id FROM collection WHERE user_id = ?";
+	connection.query(sql, [user_id], function (err, result) {
+		if(err)	throw err;
+		handle(result.length);
+	});
+};

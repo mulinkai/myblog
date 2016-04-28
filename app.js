@@ -3,7 +3,25 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var log4js = require('log4js');
+log4js.configure({
+    appenders: [
+        { type: 'console' },
+        {
+            type: 'file',
+            filename: 'logs/access.log',
+            maxLogSize: 1024,
+            backups: 3,
+            category: 'normal'
+        }
+    ],
+    replaceConsole: true
+});
 
+var logger = log4js.getLogger('normal');
+logger.setLevel('INFO');
+app.use(log4js.connectLogger(logger, {level: log4js.levels.INFO}));
+//app.use(log4js.connectLogger(logger, {level: log4js.levels.INFO, format: ':method :url :status :hostname'}));
 /*app.configure(function () {
 	
 })*/

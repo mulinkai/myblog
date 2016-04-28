@@ -14,12 +14,13 @@
 	<section class="container">
         <aside class="aside">
         	<a onclick="beforePublish(<%= isLogin %>)" class="btn btn-blue"><i class="icon-pencil"></i></span>&nbsp;&nbsp;写文章</a>
+        	<a href="/sendEmail" class="btn btn-blue"><i class="icon-pencil"></i></span>&nbsp;&nbsp;发邮件</a>
         	<% if(isLogin) { %>
 	    		<div class="aboutme">
 	    			<div><%= user.user_name %></div>
-	    			<span>我的年龄:<span id="old"></span></span>
-	    			<span>原创(5)</span>
-	    			<span>收藏(10)</span>
+	    			<span>我的年龄:<span id="info-old"></span></span>
+	    			<span>原创(<span id="info-create"></span>)</span>
+	    			<span>收藏(<span id="info-collection"></span>)</span>
 	    		</div>
 	    	<% } %>
         	<div class="recommend">
@@ -48,13 +49,13 @@
 	            <% i++; }); %>
 	        <% } %>
 	        <div class="page">
-	        	<a title="上一页" <% if(index>1){ %>href="/index/page/<%= index-1 %>?orderBy=<%= orderBy %>"<% } else{ %>onclick="showMessage('已是最前一页')"<% } %>>
+	        	<a title="上一页" <% if(index>1){ %>href="/index/<%= index-1 %>?orderBy=<%= orderBy %>&keyword=<%= keyword %>"<% } else{ %>onclick="showMessage('已是最前一页')"<% } %>>
 	        		<i style="font-size: 1.2em;" class="icon-angle-left"></i>
 	        	</a>
 	        	<% for(var i = 1; i <= Math.ceil(counts/15); i++){ %>
-	        		<a href="/index/page/<%= i %>?orderBy=<%= orderBy %>" <% if(index==i){ %>class="active"<% } %>><%= i %></a>
+	        		<a href="/index/<%= i %>?orderBy=<%= orderBy %>&keyword=<%= keyword %>" <% if(index==i){ %>class="active"<% } %>><%= i %></a>
 	        	<% } %>
-	        	<a title="下一页" <% if(index<Math.ceil(counts/15)){ %> href="/index/page/<%= parseInt(index, 10)+1 %>?orderBy=<%= orderBy %>"<% } else{ %>onclick="showMessage('已是最后一页')"<% } %>>
+	        	<a title="下一页" <% if(index<Math.ceil(counts/15)){ %> href="/index/<%= parseInt(index, 10)+1 %>?orderBy=<%= orderBy %>&keyword=<%= keyword %>"<% } else{ %>onclick="showMessage('已是最后一页')"<% } %>>
 					<i style="font-size: 1.2em;" class="icon-angle-right"></i>
 	        	</a>
 	        </div>

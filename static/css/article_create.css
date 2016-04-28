@@ -1,3 +1,8 @@
+.cred {
+	color: red;
+	padding-right: 4px;
+	font-size: 1.3em;
+}
 .aside {
 	float: right;
 	margin-top: 15px;
@@ -34,14 +39,35 @@
 	text-align: right;
 }
 .section div.row input,
-.section div.row textarea {
+.section div.row textarea,
+#labels {
     line-height: 20px;
     padding: 6px 12px;
 	display: inline-block;
 	width: 85%;
 	margin-left: 15px;
 }
-
+#labels label {
+	display: inline-block;
+	font-size: 0.9em;
+	cursor: pointer;
+    background: #edf1f2;
+    height: 24px;
+    padding: 5px 6px 5px 10px;
+    line-height: 24px;
+    color: #787d82;
+    text-align: center;
+    margin-right: 2px;
+    margin-top: 2px;
+}
+#labels label:hover {
+    color: #14191e;
+    background-color: #D0D6D9;
+}
+.label-active {
+    color: #14191e !important;
+    background-color: #D0D6D9 !important;
+}
 .section .row:last-child input {
 	margin-left: 120px;
 	width: 85px;

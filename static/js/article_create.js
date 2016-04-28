@@ -12,12 +12,85 @@ $(document).ready(function () {
     	'Cocos2d-x',
     	'CSS3',
     	'Go',
+        'Html/CSS',
+        'Html5',
+        'IOS',
+        'JAVA',
+        'Javascript',
+        'JQuery',
+        'Linux',
+        'Maya',
+        'MongoDB',
+        'Mysql',
+        'Node.js',
+        'Oracle',
+        'Photoshop',
+        'Premiere',
+        'Python',
+        'SQL Server',
+        'Unity 3D',
+        'WebApp',
+        'ZBrush',
+        '云计算',
+        '前端工具',
+        '大数据',
+        '数据结构',
+
     ];
-    labels.foreach();
+    labels.forEach(function (label) {
+        $('<label>').html(label).appendTo('#labels');
+    });
+
+    $('#labels>label').on('click', function(event) {
+        event.preventDefault();
+        var that = this,
+            temp = $(that).html(),
+            $label = $('input[name="label"]'),
+            tag = true;
+        var labelArray = $label.val().split(',');
+        if(labelArray[0] === '')
+            labelArray.shift();
+        labelArray.forEach(function (label, index) {
+            if(label === temp) {
+                labelArray.splice(index, 1);
+                $(that).toggleClass('label-active');
+                tag = false;
+            }
+        });
+        if(tag) {
+            labelArray.push(temp);
+            $(that).toggleClass('label-active');
+        }
+        if(labelArray.length > 3) {
+            labels.forEach(function (label, index) {
+                if(label === labelArray[0])
+                    $('#labels>label').eq(index).toggleClass('label-active');
+            });
+            labelArray.shift();
+        }
+        $label.val(labelArray.join(','));
+    });
+});
+$('input[type="file"]').on('change', function (e) {
+    var files = e.target.files;
+    var file = files[0];
+    var data = new FormData();
+    data.append('file', file);
+    console.log(data);
+    /*$.post('/article/uploadCover', data, function (data) {
+        console.log(data);
+    });*/
+    /*$.ajax({
+        url: '/article/uploadCover',
+        type: 'POST',
+        dataType: 'json',
+        data: data
+    }).done(function (res) {
+        console.log(res);
+    })*/
 });
 function checkContent () {
-	var length = $('.wangEditor-txt').html().length;
-	console.log($('.wangEditor-txt').html().length);
+	/*var length = $('.wangEditor-txt').html().length;
 	if(length < 100) {
 		showMessage('文章内容过少');	
 		return false;
@@ -26,13 +99,14 @@ function checkContent () {
 		return false;
 	} else {
 		return true;
-	}
+	}*/
+    return false;
 }
 $('#upload').on('click', function () {
 	$(this).siblings('input').click();
 });
 function addPicture () {
-	var file = $("input[name='file']")[0].files[0];
+	var file = $("input[name='image']")[0].files[0];
 
 	var r = new FileReader();
 	r.readAsDataURL(file); //Base64
