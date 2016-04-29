@@ -16,6 +16,11 @@ exports.signup = function (req, res, next) {
 			'status': 0,
 			'msg': '输入不能为空'
 		});
+	}else if(req.body.captcha != req.session.captcha) {
+		res.send({ 
+			'status': 4,
+			'msg': '验证码错误'
+		});
 	}else {
 		userDao.validateUsername(user_name, function (result) {
 			if(result.length > 0) {
@@ -44,23 +49,30 @@ exports.signup = function (req, res, next) {
 exports.login = function (req, res, next) {
 	var user_name = req.body.username;
 	var pass = req.body.password;
-	userDao.login(user_name, pass, function (user) {
-		if (user) {
-			req.session.user = user;
-			req.session.token = true;
-			res.send({ 
-				'status': 2,
-				'msg': '登录成功，等待跳转...'
-			});
-			var date = new Date();
-			console.log(user.user_name + ' 登录成功：' + date);
-		} else{
-			res.send({ 
-				'status': 0,
-				'msg': '用户名或密码不正确'
-			});
-		};
-	});
+	if(req.body.captcha != req.session.captcha) {
+		res.send({ 
+			'status': 4,
+			'msg': '验证码错误'
+		});
+	}else {
+		userDao.login(user_name, pass, function (user) {
+			if (user) {
+				req.session.user = user;
+				req.session.token = true;
+				res.send({ 
+					'status': 2,
+					'msg': '登录成功'
+				});
+				var date = new Date();
+				console.log(user.user_name + ' 登录成功：' + date);
+			} else{
+				res.send({ 
+					'status': 0,
+					'msg': '用户名或密码不正确'
+				});
+			};
+		});
+	}
 }
 
 //用户登出

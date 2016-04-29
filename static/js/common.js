@@ -92,6 +92,18 @@ $('.row-self input').on('change', function(event) {
 			validateNo(this);
 		}
 	}
+	if(name == 'captcha') {
+		$(this).attr('data-status', 'true');
+		if($(this).val().length == 4) {
+			$('p#msg').html('');
+			validateOk(this);
+		}
+		else {
+			$(this).attr('data-status', 'false');
+			$('p#msg').html('验证码个数错误');
+			validateNo(this);
+		}
+	}
 });
 //表单验证结束
 
@@ -119,26 +131,30 @@ $('#submit').on('click', function(event) {
 	if(status) {
 		var username = $('#username').val(),
 			email = $('#email').val(),
-			password = $('#password').val();
+			password = $('#password').val(),
+			captcha = $('#captcha').val();
 		var url = $(this).attr('data-src'),
 			reload = false;
 		$.post(url, {
 			'username': username,
 			'email': email,
-			'password': password
+			'password': password,
+			'captcha': captcha
 		}, function(data) {
 			if(data.status == 0) {
 				$('p#msg').html(data.msg);
+				$('input').val('');
 			}
 			if(data.status == 1) {
 				$('.row-self:first-child span').last().click();
 				$('#msg').html(data.msg);
 			}
 			if(data.status == 2) {
-				$('#msg').html(data.msg);
-				setTimeout(function () {
-					window.location.href = window.location.href;
-				}, 300);
+				window.location.href = window.location.href;
+			}
+			if(data.status == 4) {
+				$('p#msg').html(data.msg);
+				change();
 			}
 		});
 	}
@@ -179,7 +195,7 @@ function beforePublish (token) {
 }
 
 function change () {
-	$('#captcha-img').attr('src', '/captchar/get?width=120&height=35&' + new Date().getTime());
+	$('#captcha-img').attr('src', '/captcha/get?width=120&height=35&' + new Date().getTime());
 }
 
 //back to top
@@ -193,11 +209,11 @@ $(window).on('scroll', function(event) {
 	}
 });
 
-$(window).on('mousemove', function (e) {
+/*$(window).on('mousemove', function (e) {
 	if(e.clientY < 60){
 		$('.main-head').addClass('main-head-fixed').animate({height: '61px', opacity: 1}, 400);
 	}
 	else{
 		$('.main-head-fixed').removeClass('main-head-fixed');
 	}
-});
+});*/
