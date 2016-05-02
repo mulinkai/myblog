@@ -14,7 +14,6 @@
 	<section class="container">
         <aside class="aside">
         	<a onclick="beforePublish(<%= isLogin %>)" class="btn btn-blue"><i class="icon-pencil"></i></span>&nbsp;&nbsp;写文章</a>
-        	<a href="/sendEmail" class="btn btn-blue"><i class="icon-pencil"></i></span>&nbsp;&nbsp;发邮件</a>
         	<% if(isLogin) { %>
 	    		<div class="aboutme">
 	    			<div><%= user.user_name %></div>

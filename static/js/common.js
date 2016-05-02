@@ -6,7 +6,7 @@ $('.overlay, #cancel').on('click', function(event) {
 });
 function closeOverlay () {
 	$('.overlay').addClass('hid');
-	$('.form').css('display', 'none');;
+	$('.form').css('display', 'none');
     $('.confirm').addClass('hid');
 }
 function showMessage (msg) {
@@ -21,7 +21,22 @@ $('.toTop').on('click', function(event) {
 	$('body, html').animate({'scroll-top': 0}, 500);
 });
 
+$('#welcome').on('mouseover', function(event) {
+	event.preventDefault();
+	$(this).children('i').removeClass('icon-caret-down');
+	$(this).children('i').addClass('icon-caret-up');
+	$('.mine').slideDown('fast');
+});
+$('#welcome').on('mouseout', function(event) {
+	event.preventDefault();
+	$(this).children('i').removeClass('icon-caret-up');
+	$(this).children('i').addClass('icon-caret-down');
+	$('.mine').slideUp('fast');
+});
+
 $(document).ready(function() {
+	var width = $('#welcome').parent().width() - 2;
+	$('.mine li').width(width);
 	if($('section.section').height() < $(window).height()*0.6)
 		$('footer.footer').css({
 			position: 'fixed',

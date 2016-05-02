@@ -8,13 +8,17 @@
 			</form>
 		</li>
 		<% if(isLogin) {%>
-			<li>
-				<a id="welcome" data-user-id=<%= user.user_id %>>欢迎您，<%= user.user_name %>&nbsp;&nbsp;</a><br>
-			</li>
 			<li><a href="/">首页</a></li>
 			<li>
-				<a href="/logout">退出登录</a>
+				<a id="welcome" data-user-id=<%= user.user_id %>>欢迎您，<%= user.user_name %>&nbsp;&nbsp;<i class="icon-caret-down"></i></a>
 			</li>
+			<ul class="mine">
+				<li><a href="#"><i class="icon-user"></i>&nbsp;&nbsp;个人资料</a></li>
+				<li><a href="#"><i class="icon-cog">&nbsp;&nbsp;</i>密码管理</a></li>
+				<li><a href="#"><i class="icon-edit"></i>&nbsp;&nbsp;我的文章</a></li>
+				<li><a href="#"><i class="icon-bookmark">&nbsp;&nbsp;</i>我的收藏</a></li>
+				<li><a href="/logout"><i class="icon-off"></i>&nbsp;&nbsp;退出登录</a></li>
+			</ul>
 		<% } else { %>
 			<li><a href="/">首页</a></li>
 			<li><a id="btn-login">登录</a></li>
@@ -58,7 +62,7 @@
 		</div>
 		<div class="row-self">
 			<label class=""></label>
-			<img id="captcha-img" src="/captcha/get?width=120&height=35" alt="" height="40" width="120">
+			<img id="captcha-img" style="margin-bottom: -6px;" src="/captcha/get?width=120&height=35" alt="" height="40" width="120">
 			<a class="btn-captcha" href="javascript:;" onclick="change()">看不清，换一张</a>
 		</div>
 		<div class="row-self">
