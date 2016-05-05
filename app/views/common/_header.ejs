@@ -10,15 +10,19 @@
 		<% if(isLogin) {%>
 			<li><a href="/">首页</a></li>
 			<li>
-				<a id="welcome" data-user-id=<%= user.user_id %>>欢迎您，<%= user.user_name %>&nbsp;&nbsp;<i class="icon-caret-down"></i></a>
+				<a id="welcome" data-user-id=<%= user.user_id %>>
+					欢迎您，<%= user.user_name %>
+					&nbsp;&nbsp;
+					<i class="icon-caret-down"></i>
+				</a>
+				<ul class="mine">
+					<li><a href="#"><i class="icon-user"></i>&nbsp;&nbsp;个人资料</a></li>
+					<li><a href="/managePass"><i class="icon-cog">&nbsp;&nbsp;</i>密码管理</a></li>
+					<li><a href="#"><i class="icon-edit"></i>&nbsp;&nbsp;我的文章</a></li>
+					<li><a href="#"><i class="icon-bookmark">&nbsp;&nbsp;</i>我的收藏</a></li>
+					<li><a href="/logout"><i class="icon-off"></i>&nbsp;&nbsp;退出登录</a></li>
+				</ul>
 			</li>
-			<ul class="mine">
-				<li><a href="#"><i class="icon-user"></i>&nbsp;&nbsp;个人资料</a></li>
-				<li><a href="#"><i class="icon-cog">&nbsp;&nbsp;</i>密码管理</a></li>
-				<li><a href="#"><i class="icon-edit"></i>&nbsp;&nbsp;我的文章</a></li>
-				<li><a href="#"><i class="icon-bookmark">&nbsp;&nbsp;</i>我的收藏</a></li>
-				<li><a href="/logout"><i class="icon-off"></i>&nbsp;&nbsp;退出登录</a></li>
-			</ul>
 		<% } else { %>
 			<li><a href="/">首页</a></li>
 			<li><a id="btn-login">登录</a></li>

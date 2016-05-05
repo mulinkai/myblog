@@ -24,13 +24,13 @@ ul {
 }
 .main-head {
 	color: #fff;
-	background: #0767C8;
-	height: 45px;
+	background: rgba(6, 98, 190, 1);
+	height: 60px;
 	padding: 0 8% 0 4%;
 }
 .logo {
 	font-size: 1.8em;
-	line-height: 45px;
+	line-height: 60px;
 	float: left;
 }
 .main-nav {
@@ -44,7 +44,7 @@ ul {
 	width: 100%;
 	height: 100%;
 	color: #fff;
-	line-height: 45px;
+	line-height: 60px;
 	padding: 0 14px;
 }
 .main-nav>li:hover {
@@ -73,46 +73,6 @@ ul {
 	height: 100%;
 	color: #fff;
 }
-/* .main-head {
-	color: white;
-	background: #0767C8;
-	height: 61px;
-	padding: 0 4%;
-}
-.main-head-fixed {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	height: 0;
-	opacity: 0;
-}
-.main-head h3 {
-	font-size: 2em;
-	font-weight: 500;
-}
-.main-head>ul {
-	float: right;
-}
-.main-head>ul li {
-	display: inline-block;
-	margin: 0 5px;
-	padding: 0 5px;
-}
-.main-head li a {
-	font-size: 1.2em;
-	line-height: 31px;
-	margin: 15px 0;
-	display: inline-block;
-	color: #fff;
-	cursor: pointer;
-}
-.main-head li a:only-child:hover {
-	transform: scale(1.15);
-	text-decoration: none;
-	animation: shake 0.25s;
-
-} */
 #main-msg {
 	position: fixed;
 	display: none;
@@ -132,7 +92,7 @@ ul {
 .footer {
 	text-align: center;
 	margin-top: 20px;
-	background: #3852BD;
+	background: rgba(6, 98, 190, 1);
 	min-height: 60px;
 	color: #fff;
 	line-height: 60px;	
@@ -281,18 +241,28 @@ ul {
 	position: fixed;
 	bottom: 61px;
 	right: 28%;
+	border-radius: 6px;
 	line-height: 30px;
-	width: 26px;
+	width: 32px;
     height: 30px;
-    background: rgba(71, 166, 217, .68);
+    background: rgba(71, 166, 217, .74);
     color: #fff;
     text-align: center;
-    padding: 12px 7px 12px 5px;
+    padding: 14px 7px 8px 5px;
     font-size: 1.4em;
     cursor: pointer;
 }
 .toTop:hover {
-	background: rgba(71, 166, 217, .85);
+	background: rgba(71, 166, 217, .95);
+}
+.toTop span {
+	border-radius: 2px;
+	display: inline-block;
+	width: 22px;
+	border-top: 4px solid #fff;
+	position: absolute;
+	left: 10px;
+	top: 15px;
 }
 .page {
 	text-align: center;

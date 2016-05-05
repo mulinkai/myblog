@@ -34,7 +34,7 @@
 		<section class="section">
 			<ul>
 			      <li <% if(orderBy == 'latest'){ %>class="active"<% } %>><a href="/">最新</a></li>
-			      <li <% if(orderBy == "'hotest'"){ %>class="active"<% } %>><a href="/index?orderBy='hotest'">最热</a></li>
+			      <li <% if(orderBy == "'hotest'"){ %>class="active"<% } %>><a href="/index?orderBy='hotest'&keyword=<%= keyword %>">最热</a></li>
 			</ul>
 			<% if (articles.length) { var i = 1; %>
 	            <% articles.forEach (function(article) { %>

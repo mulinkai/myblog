@@ -136,3 +136,11 @@ exports.loginRequired = function (req, res, next) {
 		return res.redirect('/');
 	next();
 };
+
+//修改密码页面
+exports.managePass = function (req, res, next) {
+	console.log(123);
+	res.render('managePass', {
+		title:　"修改密码"
+	});
+}

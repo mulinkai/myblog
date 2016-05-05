@@ -41,6 +41,7 @@ module.exports = function (app) {
 	app.post('/signup', User.signup);
 	app.get('/logout', User.logout);
 	app.get('/queryInfo', User.queryInfo);
+	app.get('/managePass', User.loginRequired, User.managePass);
 
 
 	// Blog
