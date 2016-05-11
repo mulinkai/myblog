@@ -10,8 +10,8 @@ log4js.configure({
         {
             type: 'file',
             filename: 'logs/access.log',
-            maxLogSize: 1024,
-            backups: 3,
+            maxLogSize: 1024 * 100,
+            backups: 1,
             category: 'normal'
         }
     ],

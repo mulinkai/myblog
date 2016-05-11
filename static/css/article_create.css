@@ -35,7 +35,7 @@
 }
 .section div.row span:first-child {
 	display: inline-block;
-	width: 5%;
+	width: 6%;
 	text-align: right;
 }
 .section div.row input,
@@ -73,15 +73,17 @@
 	width: 85px;
 }
 .section select {
+	border-radius: 3px;
 	margin-left: 15px;
     line-height: 20px;
     padding: 6px 12px;
 }
 .section textarea + div.wangEditor-container {
+	border-radius: 3px;
 	position: relative;
 	min-height: 370px;
 	max-height: 740px;
-	left: 60px;
+	left: 65px;
 	top: -15px;
 }
 .section textarea + .wangEditor-container .wangEditor-menu-container {

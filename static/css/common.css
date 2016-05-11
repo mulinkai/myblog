@@ -13,7 +13,7 @@ body,h3,ul,li {
 input {
 	border-radius: 4px;
 	line-height: 20px;
-	padding: 6px 12px;
+	padding: 6px 12px 6px 25px;
 	font-size: 1em;
 }
 a {
@@ -180,7 +180,7 @@ ul {
 	position: absolute;
 	top: 50%;
 	left: 35%;
-	transform: translateY(-70%);
+	transform: translateY(-50%);
 	width: 30%;
 	min-width: 400px;
 	display: none;
@@ -236,6 +236,11 @@ ul {
 	text-align: right;
 	padding-right: 20px;
 }
+.row-self label i {
+	position: relative;
+	left: 44px;
+	color: #A9A9A9;
+}
 .toTop {
 	display: none;
 	position: fixed;
@@ -269,12 +274,12 @@ ul {
 	padding: 30px 0;
 }
 .page a {
-	border-radius: 1px;
+	border-radius: 17px;
 	cursor: pointer;
 	width: 32px;
 	height: 32px;
 	display: inline-block;
-	border: 1px solid #ddd;
+	border: 1px solid rgba(56, 82, 189, .35);
 	line-height: 32px;
 	vertical-align: middle;
 	font-family: Arial;
@@ -293,13 +298,13 @@ ul {
 		transform: rotate(0deg);
 	}
 	25% {
-		transform: rotate(20deg);
+		transform: rotate(45deg);
 	}
 	50% {
 		transform: rotate(0deg);
 	}
 	75% {
-		transform: rotate(-20deg);
+		transform: rotate(-45deg);
 	}
 	to {
 		transform: rotate(0deg);

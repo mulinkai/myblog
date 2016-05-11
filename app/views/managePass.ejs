@@ -10,7 +10,23 @@
 </head>
 <body>
     <% include common/_header %>
-    
+    <section>
+        <form action="" class="form" style="display: block;">
+            <select name="method" id="">
+                <option value="1">通过原密码修改</option>
+                <option value="2">通过绑定邮箱修改</option>
+            </select>
+            <br>
+            <label>旧密码</label><input type="password" name="oldPass">
+            <br>
+            <label>新密码</label><input type="password" name="newPass">
+            <br>
+            <label>确认密码</label><input type="password" name="repPass">
+            <br>
+            <input type="submit" value="提交">
+            <input type="button" value="取消" onclick="javascript:history.go(-1)">
+        </form>
+    </section>
     <%- include common/_footer %>
     <script type="text/javascript" src="/public/js/jquery-1.12.1.min.js"></script>
     <script type="text/javascript" src="/public/js/common.js"></script>

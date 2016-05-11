@@ -17,9 +17,6 @@
             <header article_id="<%= data.article.article_id %>">
                 <h3><%- data.article.title %></h3>
                 <p><small><%= data.article.author %></small><small><%= data.article.publish_time %></small><small><%= data.article.visited%>次浏览</small><span id="ope-recommend"><i class="icon-thumbs-up">&nbsp;</i><b>点赞</b></span><span <% if(data.collect){ %> collected <% } %> id="ope-collect"><i class="icon-star-empty">&nbsp;</i><b>收藏</b></span></p>
-                <script type="text/javascript">
-                    console.log(<%= data.collect %>);
-                </script>
             </header>
             <section>
                 <article><%- data.article.content %></article>
@@ -91,7 +88,7 @@
                 <div class="comment">
                     <b class="user"><%= user.user_name %></b>
                     <p>
-                        <textarea name="" id="" cols="82" rows="5"></textarea>
+                        <textarea name="" id="" cols="76" rows="5"></textarea>
                         <span id="comment-submit" author=<%= user.user_name %> article_id=<%= data.article.article_id %> class="btn btn-green right">提交</span>
                     </p>
                 </div>
