@@ -16,10 +16,11 @@
         <aside class="aside"></aside>
         <section class="section">
            <h3>发表文章</h3>
-           <form action="/article/create/<%= article.article_id %>" method="post" class="newblog" onsubmit="return checkContent()"  enctype="multipart/form-data">
+           <!-- <form action="/article/create/<%= article.article_id %>" method="post" class="newblog" onsubmit="return checkContent()"  enctype="multipart/form-data"> -->
+           <form action="/article/create/<%= article.article_id %>" method="post" class="newblog" onsubmit="return checkContent()">
            		<div class="row">
            			<span><i class="cred">*</i>标题</span>
-           			<input type="text" name="title" required placeholder="请输入标题" min="3" value="<%= article.title %>">
+           			<input type="text" name="title" placeholder="请输入标题" min="3" value="<%= article.title %>">
            		</div>
            		<div class="row">
            			<span style="margin-right:17px;">封面</span>

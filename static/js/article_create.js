@@ -71,26 +71,30 @@ $(document).ready(function () {
         $label.val(labelArray.join(','));
     });
 });
-$('input[type="file"]').on('change', function (e) {
+/*$('input[type="file"]').on('change', function (e) {
     var files = e.target.files;
     var file = files[0];
     var data = new FormData();
     data.append('file', file);
     console.log(data);
-    /*$.post('/article/uploadCover', data, function (data) {
+    $.post('/article/uploadCover', data, function (data) {
         console.log(data);
-    });*/
-    /*$.ajax({
+    });
+    $.ajax({
         url: '/article/uploadCover',
         type: 'POST',
         dataType: 'json',
         data: data
     }).done(function (res) {
         console.log(res);
-    })*/
-});
+    })
+});*/
 function checkContent () {
-	/*var length = $('.wangEditor-txt').html().length;
+    if(!$('input[name="title"]').val()) {
+        showMessage('标题不能为空');
+        return false;
+    }
+	var length = $('.wangEditor-txt').html().length;
 	if(length < 100) {
 		showMessage('文章内容过少');	
 		return false;
@@ -99,7 +103,7 @@ function checkContent () {
 		return false;
 	} else {
 		return true;
-	}*/
+	}
     return false;
 }
 $('#upload').on('click', function () {

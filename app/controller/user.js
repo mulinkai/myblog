@@ -42,10 +42,6 @@ exports.signup = function (req, res, next) {
 }
 
 //用户登录
-/*exports.showLogin = function (req, res, next) {
-	res.render('login',{title: 'login'});
-}*/
-
 exports.login = function (req, res, next) {
 	var user_name = req.body.username;
 	var pass = req.body.password;
@@ -93,10 +89,10 @@ exports.queryInfo = function (req, res, next) {
 	var user_id = req.query.id,
 		info = {},
 		myres = res;
-		/*console.log(111);
-		res.send({old: 32});*/
-	Promise.all([queryOld(user_id, info), queryAccount(user_id, info), queryCollectionAccout(user_id, info)]).then(function (res) {
-		myres.send(info);
+	Promise.all([queryOld(user_id, info),
+		queryAccount(user_id, info),
+		queryCollectionAccout(user_id, info)]).then(function (res) {
+			myres.send(info);
 	});
 };
 
@@ -139,8 +135,69 @@ exports.loginRequired = function (req, res, next) {
 
 //修改密码页面
 exports.managePass = function (req, res, next) {
-	console.log(123);
 	res.render('managePass', {
 		title:　"修改密码"
 	});
+};
+
+//通过旧密码修改密码
+exports.changePass = function (req, res, next) {
+	var oldPass = req.body.oldPass,
+		newPass = req.body.newPass,
+		user_name = req.session.user.user_name;
+	if(!oldPass || !newPass)
+		res.send({
+			status: 0,
+			msg: '输入不能为空'
+		});
+	else
+		userDao.login(user_name, oldPass, function (user) {
+			if (user) {
+				userDao.updatePass(user_name, newPass, function (data) {
+					if(data.message) {
+						req.session.user = '';
+						req.session.token = false;
+						res.send({
+							status: 1,
+							msg: '修改密码成功，请重新登录'
+						});
+					}
+				});
+			} else{
+				res.send({ 
+					'status': 0,
+					'msg': '旧密码不正确'
+				});
+			};
+		});
+}
+
+//通过绑定邮箱修改密码
+exports.changePassByEmail = function (req, res, next) {
+	console.log('123');
+	var captcha = req.body.emailCaptcha,
+		newPass = req.body.newPass,
+		user_name = req.session.user.user_name;
+	if(!captcha || !newPass) {
+		res.send({
+			status: 0,
+			msg: '输入不能为空'
+		});
+	}else if(captcha == req.session.emailCaptcha){
+		userDao.updatePass(user_name, newPass, function (data) {
+					if(data.message) {
+						req.session.user = '';
+						req.session.token = false;
+						res.send({
+							status: 1,
+							msg: '修改密码成功，请重新登录'
+						});
+					}
+				});
+	}else {
+		res.send({
+			status: 0,
+			msg: '邮箱验证码错误'
+		});
+	}
 }

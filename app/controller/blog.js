@@ -20,8 +20,25 @@ exports.showCreate = function (req, res, next) {
 	}
 };
 
+//发表博客
 exports.create = function (req, res, next) {
 	var article_id = req.params.id,
+	 	title = req.body.title,
+	 	content = req.body.content;
+	if (article_id != undefined) {
+		blogDao.update(article_id, title, content, function () {
+			console.log("修改成功");
+			var url = '/article/' + article_id;
+			res.redirect(url);
+		});
+	} else{
+		var author = req.session.user.user_name;
+		blogDao.create(title, content, author, function (id){
+			res.redirect('/article/' + id);
+		});
+	}
+
+	/*var article_id = req.params.id,
 		title = req.body.title,
 		content = req.body.content;
 	var busboy = new Busboy({ headers: req.headers });
@@ -51,8 +68,8 @@ exports.create = function (req, res, next) {
 			req.pipe(busboy);
 			res.redirect('/article/' + id);
 		});
-	};
-}
+	};*/
+};
 
 exports.uploadCover = function (req, res, next) {
 	var busboy = new Busboy({ headers: req.headers });

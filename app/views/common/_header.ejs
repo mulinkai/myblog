@@ -1,5 +1,5 @@
 <header class="main-head">
-	<h3 class="logo">My Blog</h3>
+	<h3 class="logo">XDUBlog</h3>
 	<ul class="main-nav">
 		<li>
 			<form class="" action="/index" method="get">
@@ -16,9 +16,9 @@
 					<i class="icon-caret-down"></i>
 				</a>
 				<ul class="mine">
-					<li><a href="#"><i class="icon-user"></i>&nbsp;&nbsp;个人资料</a></li>
-					<li><a href="/managePass"><i class="icon-cog">&nbsp;&nbsp;</i>密码管理</a></li>
-					<li><a href="#"><i class="icon-edit"></i>&nbsp;&nbsp;我的文章</a></li>
+					<!-- <li><a href="#"><i class="icon-user"></i>&nbsp;&nbsp;个人资料</a></li> -->
+					<li><a href="/managePass"><i class="icon-cog">&nbsp;&nbsp;</i>个人管理</a></li>
+					<li><a href="/index?keyword=<%= user.user_name %>"><i class="icon-edit"></i>&nbsp;&nbsp;我的文章</a></li>
 					<li><a href="#"><i class="icon-bookmark">&nbsp;&nbsp;</i>我的收藏</a></li>
 					<li><a href="/logout"><i class="icon-off"></i>&nbsp;&nbsp;退出登录</a></li>
 				</ul>
@@ -61,7 +61,7 @@
 		</div>
 		<div class="row-self">
 			<label class="">验证码<i class="icon-spinner"></i></label>
-			<input data-status="false" id="captcha" class="col-md-5" name="captcha" type="text" required />
+			<input data-status="false" max="4" id="captcha" class="col-md-5" name="captcha" type="text" required />
 			<i></i>
 		</div>
 		<div class="row-self">

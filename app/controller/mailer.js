@@ -1,5 +1,11 @@
 var nodemailer = require('nodemailer');
 exports.sendEmail = function (req, res, next) {
+    var s = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+        captcha = '';
+    for(var i = 0; i < 6; i++) {
+        var temp = Math.floor(Math.random()*62);
+        captcha += s.charAt(temp);
+    }
     var nodemailer = require('nodemailer');
 
     // create reusable transporter object using the default SMTP transport
@@ -16,10 +22,10 @@ exports.sendEmail = function (req, res, next) {
     // setup e-mail data with unicode symbols
     var mailOptions = {
         from: '"MyBlog" <muyu10086@126.com>', // sender address
-        to: '1814207398@qq.com', // list of receivers
-        subject: '欢迎注册MyBlog ✔', // Subject line
-        text: 'Hello world', // plaintext body
-        html: '<b>Hello world</b><b><a href="http://127.0.0.1:3000/EmailValidate?id=123&num=456">点此处完成邮箱验证</a></b>' // html body
+        to: req.query.email, // list of receivers
+        subject: '修改密码验证', // Subject line
+        text: '邮箱验证码', // plaintext body
+        html: '<b>邮箱验证码</b><b>尊敬的用户您好，本次修改密码的验证码为' + captcha + ',请勿将验证码告诉其他人，如果不是本人操作，请忽略此邮件</b>' // html body
     };
 
     // send mail with defined transport object
@@ -28,10 +34,9 @@ exports.sendEmail = function (req, res, next) {
             return console.log(error);
         }
         console.log('Message sent: ' + info.response);
+        req.session.emailCaptcha = captcha;
+        res.send({
+            status: 1
+        });
     });
 };
-exports.emailValidate = function (req, res, next) {
-    console.log(req.query.id);
-    console.log(req.query.num);
-    res.redirect('/');
-}

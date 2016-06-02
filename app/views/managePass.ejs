@@ -11,24 +11,133 @@
 <body>
     <% include common/_header %>
     <section>
-        <form action="" class="form" style="display: block;">
-            <select name="method" id="">
-                <option value="1">通过原密码修改</option>
-                <option value="2">通过绑定邮箱修改</option>
-            </select>
-            <br>
-            <label>旧密码</label><input type="password" name="oldPass">
-            <br>
-            <label>新密码</label><input type="password" name="newPass">
-            <br>
-            <label>确认密码</label><input type="password" name="repPass">
-            <br>
-            <input type="submit" value="提交">
-            <input type="button" value="取消" onclick="javascript:history.go(-1)">
+        <form class="form" style="display: block;width: 42%;left: 30%;">
+            <div class="row-self">
+                <label>修改方式</label><select name="method" id="" style="padding: 6px 6px;border-radius: 3px;">
+                    <option value="1">通过原密码修改</option>
+                    <option value="2">通过绑定邮箱修改</option>
+                </select>
+            </div>
+            <div class="row-self" data-type="1">
+                <label>旧密码<i class="icon-lock"></i></label><input type="password" style="padding-left: 29px;" name="oldPass">
+            </div>
+            <div class="row-self hid" data-type="2">
+                <label>绑定邮箱<i class="icon-envelope"></i></label><input type="text" readonly value="<%= user.email %>" style="padding-left: 29px;" name="bangEmail"><input id="sendCaptcha" type="button" class="btn btn-blue" style="margin-left: 3px;display: inline-block;" value="获取验证码"><i class="icon-spinner icon-spin icon-x" style="color: #fff;position: relative;left: -21px;display: none;"></i>
+            </div>
+            <div class="row-self hid" data-type="2">
+                <label>邮箱验证码<i class="icon-lock"></i></label><input type="text" style="padding-left: 29px;" name="emailCaptcha">
+            </div>
+            <div class="row-self">
+                <label>新密码<i class="icon-key"></i></label><input type="password" style="padding-left: 29px;" name="newPass">
+            </div>
+            <div class="row-self">
+                <label>确认密码<i class="icon-key"></i></label><input type="password" style="padding-left: 29px;" name="repPass">
+            </div>
+            <div class="row-self" style="text-align: center;">
+                <input type="button" id="managePass" class="btn btn-green" value="提交"><i class="icon-spinner icon-spin icon-x" style="color: #fff;position: relative;left: -25px;display: none;"></i>
+                <input type="button" class="btn btn-default" value="取消" onclick="javascript:history.go(-1)">
+            </div>
         </form>
     </section>
     <%- include common/_footer %>
     <script type="text/javascript" src="/public/js/jquery-1.12.1.min.js"></script>
     <script type="text/javascript" src="/public/js/common.js"></script>
+    <script type="text/javascript">
+        var stv, type = 1;
+        $('#managePass').on('click', function (){
+            $(this).css('padding-right', '29px');
+            $('#managePass + i').css('display', 'inline-block');
+            if(type == 1) {
+                if($('input[name="newPass"]').val() != $('input[name="repPass"]').val()){
+                    $(this).css('padding-right', '13px');
+                    $('#managePass + i').css('display', 'none');
+                    $('input[type="password"]').val('');
+                    showMessage('两次密码不一致');
+                }else {
+                    var option = {
+                        oldPass: $('input[name="oldPass"]').val(),
+                        newPass: $('input[name="newPass"]').val(),
+                        repPass: $('input[name="repPass"]').val()
+                    };
+                    $.post('/managePass', option, function (data) {
+                        if(data.status === 0) {
+                            $('#managePass').css('padding-right', '13px');
+                            $('#managePass + i').css('display', 'none');
+                            $('input[type="password"]').val('');
+                            showMessage(data.msg);
+                        }
+                        if(data.status === 1) {
+                            clearTimeout(t);
+                            var t = setTimeout(function () {
+                                window.location.href = window.location.href;
+                            }, 1000);
+                            showMessage(data.msg);
+                        }
+                    });
+                }
+            }
+            if(type == 2) {
+                  if($('input[name="newPass"]').val() != $('input[name="repPass"]').val()){
+                      $(this).css('padding-right', '13px');
+                      $('#managePass + i').css('display', 'none');
+                      $('input[type="password"]').val('');
+                      showMessage('两次密码不一致');
+                  }else {
+                      var option = {
+                          emailCaptcha: $('input[name="emailCaptcha"]').val(),
+                          newPass: $('input[name="newPass"]').val(),
+                          repPass: $('input[name="repPass"]').val()
+                      };
+                      $.post('/managePassByEmail', option, function (data) {
+                          if(data.status === 0) {
+                              $('#managePass').css('padding-right', '13px');
+                              $('#managePass + i').css('display', 'none');
+                              $('input[type="password"]').val('');
+                              showMessage(data.msg);
+                          }
+                          if(data.status === 1) {
+                              clearTimeout(t);
+                              var t = setTimeout(function () {
+                                  window.location.href = window.location.href;
+                              }, 800);
+                              showMessage(data.msg);
+                          }
+                      });
+                  }
+            }
+        });
+        $('select').on('change', function (){
+            type = $(this).val();
+            $('.row-self[data-type]').addClass('hid');
+            $('.row-self[data-type=' + type + ']').removeClass('hid');
+        });
+        $('#sendCaptcha').on('click', function (){
+            var time = 0;
+            if(stv) {
+                showMessage('获取过于频繁');
+            }else {
+                $(this).css('padding-right', '25px');
+                $('#sendCaptcha + i').css('display', 'inline-block');
+                var option = {
+                    email: $('input[name="bangEmail"]').val()
+                };
+                $.get('/sendEmail', option, function (data) {
+                    if(data.status === 1) {
+                        stv = setInterval(function (){
+                            time++;
+                            $('#sendCaptcha').val('重新获取(' + (180-time) + 's)');
+                        }, 1000);
+                        $('#sendCaptcha').val('重新获取(' + (180-time) + 's)');
+                        $('#sendCaptcha').css('padding-right', '13px');
+                        $('#sendCaptcha + i').css('display', 'none');
+                        setTimeout(function (){
+                            clearInterval(stv);
+                            $('#sendCaptcha').val('获取验证码');
+                        }, 1000*60*3);
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

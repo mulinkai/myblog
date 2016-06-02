@@ -71,6 +71,9 @@ h3 {
 	min-height: 60px;
 	line-height: 28px;
 }
+.comment:last-child {
+	height: 138px;
+}
 .comment b, .reply>span {
 	float: left;
 	width: 150px;
@@ -81,6 +84,7 @@ h3 {
 	color: #000;
 }
 .comments p {
+	height: 0px;
 	margin-left: 150px;
 }
 .comments p:after {

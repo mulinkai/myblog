@@ -29,6 +29,7 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/app/views');
 
 app.use('/public', express.static(__dirname + '/static'));
+app.use('/static', express.static(__dirname + '/static'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 

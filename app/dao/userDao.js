@@ -21,7 +21,7 @@ exports.create = function (user_name, email, password, handle) {
 
 //验证用户名密码
 exports.login = function (user_name, pass, handle) {
-	var sql = "SELECT user_id,user_name FROM USER WHERE user_name = ? && password = ?";
+	var sql = "SELECT user_id,user_name,email FROM USER WHERE user_name = ? && password = ?";
 	connection.query(sql,[user_name,pass],function (err, result){
 		if(err) throw err;
 		handle(result[0]);
@@ -34,5 +34,14 @@ exports.queryOld = function (user_id, handle) {
 	connection.query(sql, [user_id], function (err, result) {
 		if (err) throw err;
 		handle(result[0].signup_time);
+	});
+};
+
+//更新用户密码
+exports.updatePass = function (user_name, newPass, handle) {
+	var sql = "UPDATE user SET ? WHERE user_name = ?";
+	connection.query(sql, [{password: newPass}, user_name], function (err, result) {
+		if(err)	throw err;
+		handle(result);
 	});
 }

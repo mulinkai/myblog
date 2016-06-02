@@ -1,11 +1,5 @@
 module.exports = function (app) {
 	
-	var Blog = require('../app/controller/blog');
-	var User = require('../app/controller/user');
-	var Index = require('../app/controller/index');
-	var Comment = require('../app/controller/comment');
-	var Captcha = require('../app/controller/captcha');
-	var Mailer = require('../app/controller/mailer');
 
 	// check login
 	app.use(function (req,res,next) {
@@ -24,6 +18,14 @@ module.exports = function (app) {
 	  	}
 	});
 
+	
+	var Blog = require('../app/controller/blog');
+	var User = require('../app/controller/user');
+	var Index = require('../app/controller/index');
+	var Comment = require('../app/controller/comment');
+	var Captcha = require('../app/controller/captcha');
+	var Mailer = require('../app/controller/mailer');
+
 	// index
 	app.get('/', Index.index);
 	app.get('/index', Index.index);
@@ -31,7 +33,6 @@ module.exports = function (app) {
 
 	//邮箱验证
 	app.get('/sendEmail', Mailer.sendEmail);
-	app.get('/emailValidate', Mailer.emailValidate);
 	
 	//获取验证码
 	app.get('/captcha/get', Captcha.get);
@@ -42,7 +43,8 @@ module.exports = function (app) {
 	app.get('/logout', User.logout);
 	app.get('/queryInfo', User.queryInfo);
 	app.get('/managePass', User.loginRequired, User.managePass);
-
+	app.post('/managePass', User.loginRequired, User.changePass);
+	app.post('/managePassByEmail', User.loginRequired, User.changePassByEmail);
 
 	// Blog
 	app.get('/article/create/:id?', User.loginRequired, Blog.showCreate);
