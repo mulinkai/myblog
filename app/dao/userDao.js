@@ -21,7 +21,7 @@ exports.create = function (user_name, email, password, handle) {
 
 //验证用户名密码
 exports.login = function (user_name, pass, handle) {
-	var sql = "SELECT user_id,user_name,email FROM USER WHERE user_name = ? && password = ?";
+	var sql = "SELECT user_id,user_name,email,role FROM USER WHERE user_name = ? && password = ?";
 	connection.query(sql,[user_name,pass],function (err, result){
 		if(err) throw err;
 		handle(result[0]);
@@ -44,4 +44,22 @@ exports.updatePass = function (user_name, newPass, handle) {
 		if(err)	throw err;
 		handle(result);
 	});
-}
+};
+
+//查询所有用户
+exports.findAllUser = function (handle) {
+	var sql = "SELECT * FROM user WHERE role = 0";
+	connection.query(sql, [], function (err, result) {
+		if(err)	throw er;
+		handle(result);
+	});
+};
+
+//删除用户
+exports.deleteById = function(user_id, handle) {
+	var sql = 'DELETE FROM user WHERE user_id = ?';
+	connection.query(sql, [user_id], function (err, result) {
+		if(err)	throw err;
+		handle(true);
+	});
+};

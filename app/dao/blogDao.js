@@ -37,6 +37,32 @@ exports.findAll = function (orderBy, keyword, handle) {
 
 };
 
+exports.findCollection = function (user_id, handle) {
+	var sql;
+	sql = "SELECT article_id FROM collection WHERE user_id = ?";
+	connection.query(sql, [user_id], function (err, result) {
+		if(err)	throw err;
+		var blogs = [],
+			length = result.length,
+			t = length;
+		if(!length)
+			handle(blogs);
+		while(length){
+			var article_id = result[length-1].article_id
+			length--;
+			sql = 'SELECT * FROM article WHERE article_id = ?';
+			connection.query(sql, [article_id], function (err, result) {
+				if(err)	throw err;
+				blogs.push(result[0]);
+				t--;
+				if(t === 0) {
+					handle(blogs);
+				}
+			});
+		}
+	});
+}
+
 exports.search = function (keyword, handle) {
 	var sql = 'SELECT * FROM article WHERE title LIKE ? OR author = ? ORDER BY publish_time DESC';
 	connection.query(sql, ['%' + keyword + '%', keyword], function (err, result) {

@@ -90,14 +90,14 @@ $('.row-self input').on('change', function(event) {
 		}
 	}
 	if(name == 'password') {
-		if($(this).val().length >= 6) {
+		if($(this).val().length >= 5) {
 			$(this).attr('data-status', 'true');
 			$('p#msg').html('');
 			validateOk(this);
 		}
 		else {
 			$(this).attr('data-status', 'false');
-			$('p#msg').html('密码不能少于6位');
+			$('p#msg').html('密码不能少于5位');
 			validateNo(this);
 		}
 	}
@@ -162,6 +162,8 @@ $('#submit').on('click', function(event) {
 			'password': password,
 			'captcha': captcha
 		}, function(data) {
+			if(data.status !=2 && data.status != 5)
+				$('.overlay .form .row-self input[name]').val('');
 			if(data.status == 0) {
 				$('p#msg').html(data.msg);
 				$('input').val('');
@@ -173,6 +175,9 @@ $('#submit').on('click', function(event) {
 			}
 			if(data.status == 2) {
 				window.location.href = window.location.href;
+			}
+			if(data.status == 5) {
+				window.location.href = '/manage';
 			}
 			if(data.status == 4) {
 				$('p#msg').html(data.msg);

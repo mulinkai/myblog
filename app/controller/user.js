@@ -55,10 +55,17 @@ exports.login = function (req, res, next) {
 			if (user) {
 				req.session.user = user;
 				req.session.token = true;
-				res.send({ 
-					'status': 2,
-					'msg': '登录成功'
-				});
+				if(user.role == 0) {
+					res.send({ 
+						'status': 2,
+						'msg': '登录成功'
+					});
+				}else if(user.role == 1) {
+					res.send({
+						status: 5,
+						msg: '管理员登陆成功'
+					});
+				}
 				var date = new Date();
 				console.log(user.user_name + ' 登录成功：' + date);
 			} else{
@@ -200,4 +207,31 @@ exports.changePassByEmail = function (req, res, next) {
 			msg: '邮箱验证码错误'
 		});
 	}
-}
+};
+
+//查询所有用户
+exports.findAllUser = function (req, res, next) {
+	if(req.session.user.role != 1){
+		res.redirect('/');
+	}else {
+		userDao.findAllUser(function (users) {
+			users.forEach(function (user) {
+				var date = new Date(user.signup_time);
+				user.signup_time = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+			});
+			res.render('manageUser', {
+				title: '管理用户',
+				users: users
+			});
+		});
+	}
+};
+
+//删除用户
+exports.deleteById = function (req, res, next) {
+	var user_id = req.params.user_id;
+	userDao.deleteById(user_id, function (status) {
+		if(status)
+			res.redirect('/manage');
+	});
+};

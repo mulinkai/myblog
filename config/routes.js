@@ -45,6 +45,8 @@ module.exports = function (app) {
 	app.get('/managePass', User.loginRequired, User.managePass);
 	app.post('/managePass', User.loginRequired, User.changePass);
 	app.post('/managePassByEmail', User.loginRequired, User.changePassByEmail);
+	app.get('/manage', User.loginRequired, User.findAllUser);
+	app.post('/user/delete/:user_id', User.loginRequired, User.deleteById);
 
 	// Blog
 	app.get('/article/create/:id?', User.loginRequired, Blog.showCreate);
@@ -54,6 +56,7 @@ module.exports = function (app) {
 	app.post('/article/recommend/:id', Blog.recommend);
 	app.post('/article/collect/:id', Blog.collect);
 	app.post('/article/uploadCover', Blog.uploadCover);
+	app.get('/myCollection', Blog.collections);
 
 	// Comments
 	app.post('/article/comment/:id?', Comment.create);

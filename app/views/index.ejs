@@ -46,18 +46,20 @@
 	                    <small><%= article.author %></small><small>发表于<%= article.publish_time %></small><small><%= article.visited %>&nbsp;次浏览</small><small><i class="icon-thumbs-up"></i>&nbsp;点赞(<%= article.recommend %>)</small><small><i class="icon-comment"></i>&nbsp;评论(<%= article.comments %>)</small>
 	                </div>
 	            <% i++; }); %>
+                <div class="page">
+                	<a title="上一页" <% if(index>1){ %>href="/index/<%= index-1 %>?orderBy=<%= orderBy %>&keyword=<%= keyword %>"<% } else{ %>onclick="showMessage('已是最前一页')"<% } %>>
+                		<i style="font-size: 1.2em;" class="icon-angle-left"></i>
+                	</a>
+                	<% for(var i = 1; i <= Math.ceil(counts/15); i++){ %>
+                		<a href="/index/<%= i %>?orderBy=<%= orderBy %>&keyword=<%= keyword %>" <% if(index==i){ %>class="active"<% } %>><%= i %></a>
+                	<% } %>
+                	<a title="下一页" <% if(index<Math.ceil(counts/15)){ %> href="/index/<%= parseInt(index, 10)+1 %>?orderBy=<%= orderBy %>&keyword=<%= keyword %>"<% } else{ %>onclick="showMessage('已是最后一页')"<% } %>>
+        				<i style="font-size: 1.2em;" class="icon-angle-right"></i>
+                	</a>
+                </div>
+	        <% } else { %>
+	        	<h3 style="text-align: center;">暂无数据</h3>
 	        <% } %>
-	        <div class="page">
-	        	<a title="上一页" <% if(index>1){ %>href="/index/<%= index-1 %>?orderBy=<%= orderBy %>&keyword=<%= keyword %>"<% } else{ %>onclick="showMessage('已是最前一页')"<% } %>>
-	        		<i style="font-size: 1.2em;" class="icon-angle-left"></i>
-	        	</a>
-	        	<% for(var i = 1; i <= Math.ceil(counts/15); i++){ %>
-	        		<a href="/index/<%= i %>?orderBy=<%= orderBy %>&keyword=<%= keyword %>" <% if(index==i){ %>class="active"<% } %>><%= i %></a>
-	        	<% } %>
-	        	<a title="下一页" <% if(index<Math.ceil(counts/15)){ %> href="/index/<%= parseInt(index, 10)+1 %>?orderBy=<%= orderBy %>&keyword=<%= keyword %>"<% } else{ %>onclick="showMessage('已是最后一页')"<% } %>>
-					<i style="font-size: 1.2em;" class="icon-angle-right"></i>
-	        	</a>
-	        </div>
 		</section>
 	</section>
 	<%- include common/_footer %>
