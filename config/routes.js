@@ -28,8 +28,7 @@ module.exports = function (app) {
 
 	// index
 	app.get('/', Index.index);
-	app.get('/index', Index.index);
-	app.get('/index/:page', Index.index);
+	app.get('/index/:page?', Index.index);
 
 	//邮箱验证
 	app.get('/sendEmail', Mailer.sendEmail);
@@ -47,6 +46,7 @@ module.exports = function (app) {
 	app.post('/managePassByEmail', User.loginRequired, User.changePassByEmail);
 	app.get('/manage', User.loginRequired, User.findAllUser);
 	app.post('/user/delete/:user_id', User.loginRequired, User.deleteById);
+	app.get('/manageBlog/:page?', User.loginRequired, Blog.findAllBlog);
 
 	// Blog
 	app.get('/article/create/:id?', User.loginRequired, Blog.showCreate);

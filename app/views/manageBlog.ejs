@@ -51,8 +51,8 @@
 					</a>
 					<ul class="mine">
 						<!-- <li><a href="#"><i class="icon-user"></i>&nbsp;&nbsp;个人资料</a></li> -->
-						<!-- <li><a href="/manage"><i class="icon-user">&nbsp;&nbsp;</i>用户管理</a></li> -->
-						<li><a href="/manageBlog"><i class="icon-edit"></i>&nbsp;&nbsp;博客管理</a></li>
+						<li><a href="/manage"><i class="icon-user">&nbsp;&nbsp;</i>用户管理</a></li>
+						<!-- <li><a href="/manageBlog"><i class="icon-edit"></i>&nbsp;&nbsp;博客管理</a></li> -->
 						<li><a href="/logout"><i class="icon-off"></i>&nbsp;&nbsp;退出登录</a></li>
 					</ul>
 				</li>
@@ -123,37 +123,56 @@
         	<table>
         		<thead>
         			<tr>
-        				<th>用户id</th>
-        				<th>用户名称</th>
-        				<th>用户邮箱</th>
-        				<th>注册时间</th>
+        				<th>序号</th>
+        				<th>博客id</th>
+        				<th>博客标题</th>
+        				<th>博客作者</th>
+        				<th>发表时间</th>
+        				<th>浏览数</th>
+        				<th>推荐数</th>
+        				<th>评论数</th>
         				<th>操作</th>
         			</tr>
             	</thead>
             	<tbody>
-			<% if (users.length) { var i = 1; %>
-	            <% users.forEach (function(user) { %>
+			<% if (blogs.length) { var i = 1; %>
+	            <% blogs.forEach (function(blog) { %>
 	            <tr>
-	            	<td><%= user.user_id %></td>
-	            	<td><%= user.user_name %></td>
-	            	<td><%= user.email %></td>
-	            	<td><%= user.signup_time %></td>
-	            	<td><span id="deleteUser" name="deleteUser" data-user_id=<%= user.user_id %>>删除</span></td>
+	            	<td><%= i+15*(index-1) %></td>
+	            	<td><%= blog.article_id %></td>
+	            	<td><%= blog.title %></td>
+	            	<td><%= blog.author %></td>
+	            	<td><%= blog.publish_time %></td>
+	            	<td><%= blog.visited %></td>
+	            	<td><%= blog.recommend %></td>
+	            	<td><%= blog.comments %></td>
+	            	<td><span id="deleteBlog" name="deleteBlog" data-blog_id=<%= blog.article_id %>>删除</span></td>
 	            </tr>
 	            <% i++; }); %>
 	        <% } %>
 	        	</tbody>
 	        </table>
+            <div class="page">
+            	<a title="上一页" <% if(index>1){ %>href="/manageBlog/<%= index-1 %>"<% } else{ %>onclick="showMessage('已是最前一页')"<% } %>>
+            		<i style="font-size: 1.2em;" class="icon-angle-left"></i>
+            	</a>
+            	<% for(var i = 1; i <= Math.ceil(counts/15); i++){ %>
+            		<a href="/manageBlog/<%= i %>" <% if(index==i){ %>class="active"<% } %>><%= i %></a>
+            	<% } %>
+            	<a title="下一页" <% if(index<Math.ceil(counts/15)){ %> href="/manageBlog/<%= parseInt(index, 10)+1 %>"<% } else{ %>onclick="showMessage('已是最后一页')"<% } %>>
+    				<i style="font-size: 1.2em;" class="icon-angle-right"></i>
+            	</a>
+            </div>
 		</section>
 	</section>
 	<%- include common/_footer %>
 	<script type="text/javascript" src="/public/js/jquery-1.12.1.min.js"></script>
 	<script type="text/javascript" src="/public/js/common.js"></script>
 	<script>
-		$('span[name="deleteUser"]').on('click', function () {
-			var user_id = $(this).attr('data-user_id');
+		$('span[name="deleteBlog"]').on('click', function () {
+			var blog_id = $(this).attr('data-blog_id');
 			$('.overlay').removeClass('hid');
-			$('.confirm').attr('action', '/user/delete/' + user_id).removeClass('hid');
+			$('.confirm').attr('action', '/article/delete/' + blog_id).removeClass('hid');
 		});
 	</script>
 </body>

@@ -174,6 +174,7 @@ $('#submit').on('click', function(event) {
 				$('#msg').html(data.msg);
 			}
 			if(data.status == 2) {
+				console.log(data.msg);
 				window.location.href = window.location.href;
 			}
 			if(data.status == 5) {

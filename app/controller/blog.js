@@ -148,17 +148,24 @@ exports.showBlog = function (req, res, next) {
 //删除博客
 exports.delete = function (req, res, next) {
 	var article_id = req.params.id;
-	blogDao.validateAuthor(req.session.user.user_name, article_id, function (status){
-		if (status) {
-			blogDao.deleteById(article_id, function () {
-				console.log('删除博客成功');
+	if(req.session.user.role == 1) {
+		blogDao.deleteById(article_id, function () {
+			console.log('删除博客成功');
+			res.redirect('/manageBlog');
+		});
+	}else {
+		blogDao.validateAuthor(req.session.user.user_name, article_id, function (status){
+			if (status) {
+				blogDao.deleteById(article_id, function () {
+					console.log('删除博客成功');
+					res.redirect('/');
+				});
+				commentDao.deleteByArticle(article_id);
+			} else{
 				res.redirect('/');
-			});
-			commentDao.deleteByArticle(article_id);
-		} else{
-			res.redirect('/');
-		};
-	});
+			};
+		});
+	}
 }
 //查找博客
 exports.search = function (req, res, next) {
@@ -227,7 +234,16 @@ exports.search = function (req, res, next) {
 
 //推荐博客
 exports.recommend = function (req, res, next) {
-	if (req.session.user) {
+	var article_id = req.params.id;
+	blogDao.findById(article_id, function (article) {
+		blogDao.recommend(article_id, article.recommend, function () {
+			console.log('推荐文章成功');
+			res.send(true);
+		});
+	});
+
+	//需要登录版本
+	/*if (req.session.user) {
 		var article_id = req.params.id;
 		blogDao.findById(article_id, function (article) {
 			blogDao.recommend(article_id, article.recommend, function () {
@@ -237,7 +253,7 @@ exports.recommend = function (req, res, next) {
 		});
 	} else {
 		res.send(false);
-	}
+	}*/
 }
 //收藏博客
 exports.collect = function (req, res, next) {
@@ -287,4 +303,30 @@ exports.collections = function (req, res, next) {
 			});
 		});
 	});
+};
+
+//查询所有博客（用于管理员）
+exports.findAllBlog = function (req, res, next) {
+	if(req.session.user.role != 1) {
+		res.redirect('/');
+	}else {
+		var orderBy = req.query.orderBy || 'latest',
+			keyword = req.query.keyword || '',
+			index = req.params.page || 1;
+		blogDao.findAll(orderBy, keyword, function (blogs) {
+			var counts = blogs.length;
+			blogs = blogs.slice((index-1)*15, index*15);
+			blogs.forEach(function (blog) {
+				if(blog.content.length > 200)
+					blog.content = blog.content.substr(0, 198) + '...';
+				blog.publish_time = helper.dateFormat(blog.publish_time);
+			});
+			res.render('manageBlog', { 
+				'title': '管理博客', 
+				'blogs': blogs, 
+				'counts': counts, 
+				'index': index,
+			});
+		});
+	}
 }
